@@ -1,12 +1,17 @@
 $header-height: 13%;
 $left-pane-width: 15%;
-$textarea-height: 300px;
+$textarea-height: 20%;
 $header-color: #353744;
 $main-chat-color: #F6F6F6;
 $left-pane-color: #61D290;
+$message-box-left-right-margin: 2%;
+$message-box-top-bottom-margin: 0.5%;
+$message-header-height: 10%;
+$messages-pane-width: 95%;
+$seperator-height: 1%;
 
 header {
-    position: fixed;
+    position: absolute;
     width: 100%;
     height: $header-height;
     top: 0px;
@@ -35,49 +40,73 @@ header {
     background-color: $left-pane-color;
 }
 
+.messages {
+    // reset defualt properties
+    list-style-type: none;
+    padding: 0;
+    // The real work starts here
+    position: absolute;
+    width: $messages-pane-width;
+    max-height: 100% - $textarea-height - $message-header-height - $seperator-height;
+    margin: 0% (100% - $messages-pane-width) / 2;
+    bottom: $textarea-height + $seperator-height;
+    overflow-y: auto;
+}
+
+.messages-header {
+    height: $message-header-height;
+
+    & h2 {
+        line-height: 1em;
+        font-weight: normal;
+        font-style: oblique;
+        font-size: 2em;
+        padding-left: 1em;
+    }
+
+    & aside {
+
+    }
+}
+
+.message-box {
+    background-color: white;
+    display: inline-block;
+    margin: $message-box-top-bottom-margin $message-box-left-right-margin;
+    padding: 10px 15px;
+    min-width: 25%;
+    max-width: 60%;
+    border-radius: 10px;
+}
+
+.messages-input-text-seperator {
+
+}
+
+.message-text {
+    // Already set, its a paragraph. display: block;
+    margin: 0;
+    margin-top: 5px;
+    font-size: 1em;
+}
+
+.message-time {
+    font-size: 0.8em;
+}
+
+.message-name {
+    font-weight: bold;
+    font-size: 1em;
+}
+
 .main > textarea {
     position: absolute;
     width: 100%;
-    height: 300px;
-    border: 2px solid #cccccc;
+    height: $textarea-height;
+    border: 1px solid grey;
+    border-radius: 6px;
     bottom: 0;
     resize: none;
-    padding: 5px;
+    padding: 5px;   
     font-family: Tahoma, sans-serif;
 }
-
-// $header-height: 10vh;
-// $left-pane-width: 15vw;
-// $header-color: #353744;
-// $main-chat-color: #F6F6F6;
-// $left-pane-color: #61D290;
-
-// header {
-//     position: absolute;
-//     width: 100vw;
-//     height: $header-height;
-//     top: 0px;
-//     left: 0px;
-//     right: 0px;
-//     background-color: $header-color;
-// }
-
-// .main {
-//     position: absolute;
-//     width: 100vw - $left-pane-width;
-//     height: 100vh - $header-height;
-//     top: $header-height;
-//     left: $left-pane-width;
-//     right: 0px;
-//     background-color: $main-chat-color;
-// }
-
-// .left-pane {
-//     position: absolute;
-//     width: $left-pane-width;
-//     height: 100vh - $header-height;
-//     top: $header-height;
-//     left: 0px;
-//     right: 100vw - $left-pane-width;
-//     background-color: $left-pane-color;
-// }
