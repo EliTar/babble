@@ -7,6 +7,10 @@ header {
   right: 0px;
   background-color: #353744; }
 
+.logo {
+  height: 10vh;
+  padding: 2vh; }
+
 .main {
   position: absolute;
   width: 85%;
@@ -36,13 +40,21 @@ header {
   overflow-y: auto; }
 
 .messages-header {
-  height: 10%; }
+  position: absolute;
+  height: 10%;
+  width: 100%; }
   .messages-header h2 {
-    line-height: 1em;
+    margin: 0;
+    display: inline;
     font-weight: normal;
     font-style: oblique;
-    font-size: 2em;
-    padding-left: 1em; }
+    padding: 3vh;
+    font-size: 2vw;
+    padding-left: 1vw; }
+  .messages-header aside {
+    position: absolute;
+    display: inline;
+    right: 0; }
 
 .message-box {
   background-color: white;
@@ -52,6 +64,9 @@ header {
   min-width: 25%;
   max-width: 60%;
   border-radius: 10px; }
+
+.messages-input-text-seperator {
+  height: 1%; }
 
 .message-text {
   margin: 0;
@@ -75,3 +90,19 @@ header {
   resize: none;
   padding: 5px;
   font-family: Tahoma, sans-serif; }
+
+@media screen and (max-width: 500px), screen and (max-height: 500px) {
+  .main {
+    width: 100%;
+    top: 15%;
+    height: 85%;
+    left: 0%; }
+  header {
+    height: 15%; }
+  .logo {
+    display: block;
+    margin: auto;
+    height: 11.5vh;
+    padding-top: 2vh; }
+  .left-pane {
+    width: 0%; } }

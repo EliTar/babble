@@ -1,4 +1,5 @@
 $header-height: 13%;
+$header-height-phone: 15%;
 $left-pane-width: 15%;
 $textarea-height: 20%;
 $header-color: #353744;
@@ -18,6 +19,11 @@ header {
     left: 0px;
     right: 0px;
     background-color: $header-color;
+}
+
+.logo {
+    height: 10vh;
+    padding: 2vh;
 }
 
 .main {
@@ -54,19 +60,30 @@ header {
 }
 
 .messages-header {
+    position: absolute;
     height: $message-header-height;
+    width: 100%;
 
     & h2 {
-        line-height: 1em;
+        margin: 0; // did problematic things with all the aligment 
+        display: inline;
+        //padding: 18px;
         font-weight: normal;
         font-style: oblique;
-        font-size: 2em;
-        padding-left: 1em;
+        // line-height: 1em;
+        // font-size: 2em;
+        // padding-left: 1em;
+        padding: 3vh;
+        font-size: 2vw;
+        padding-left: 1vw;
     }
 
     & aside {
-
+        position: absolute;
+        display: inline;
+        right : 0; 
     }
+
 }
 
 .message-box {
@@ -80,7 +97,7 @@ header {
 }
 
 .messages-input-text-seperator {
-
+    height: $seperator-height;
 }
 
 .message-text {
@@ -109,4 +126,28 @@ header {
     resize: none;
     padding: 5px;   
     font-family: Tahoma, sans-serif;
+}
+
+@media only screen and (max-width: 500px) , screen and (max-height: 500px) {
+    .main {
+        width: 100%;
+        top: $header-height-phone;
+        height: 100% - $header-height-phone;
+        left: 0%;
+    }
+
+    header {
+        height: $header-height-phone;
+    }
+
+    .logo {
+        display: block;
+        margin: auto;
+        height: 11.5vh;
+        padding-top: 2vh;
+    }
+
+    .left-pane {
+        width: 0%;
+    }
 }
