@@ -29,6 +29,20 @@ header {
   right: 85%;
   background-color: #61D290; }
 
+.messages::-webkit-scrollbar-track {
+  border: 2px solid #ECECEC;
+  border-radius: 10px;
+  background-color: white; }
+
+.messages::-webkit-scrollbar {
+  width: 1%;
+  background-color: #F5F5F5; }
+
+.messages::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  border: 1px solid #ECECEC;
+  background-color: #EBEDEC; }
+
 .messages {
   list-style-type: none;
   padding: 0;
@@ -45,16 +59,24 @@ header {
   width: 100%; }
   .messages-header h2 {
     margin: 0;
-    display: inline;
+    display: inline-block;
     font-weight: normal;
     font-style: oblique;
-    padding: 3vh;
-    font-size: 2vw;
-    padding-left: 1vw; }
+    margin: 1em 1.2em;
+    line-height: 1em;
+    font-size: 2.1em; }
   .messages-header aside {
     position: absolute;
     display: inline;
     right: 0; }
+
+.message-image {
+  position: relative;
+  float: left;
+  top: 0.7em;
+  left: 0px;
+  width: 3em;
+  border-radius: 50%; }
 
 .message-box {
   background-color: white;
@@ -63,7 +85,14 @@ header {
   padding: 10px 15px;
   min-width: 25%;
   max-width: 60%;
-  border-radius: 10px; }
+  border-style: solid;
+  border-width: 0.15em;
+  border-color: #ECECEC;
+  border-radius: 10px;
+  transition-duration: 0.2s; }
+
+.message-box:hover {
+  background-color: #EBEDEC; }
 
 .messages-input-text-seperator {
   height: 1%; }
@@ -71,7 +100,29 @@ header {
 .message-text {
   margin: 0;
   margin-top: 5px;
-  font-size: 1em; }
+  font-size: 1.2em; }
+
+.message-close {
+  background: none;
+  border: none;
+  outline: none;
+  display: none;
+  float: right;
+  font-size: 1em;
+  font-weight: bold;
+  margin-top: -0.4em;
+  margin-right: -0.6em;
+  color: #383A47;
+  animation: fade-in 0.7s; }
+
+@keyframes fade-in {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+.message-box:hover .message-close {
+  display: block; }
 
 .message-time {
   font-size: 0.8em; }
@@ -80,18 +131,33 @@ header {
   font-weight: bold;
   font-size: 1em; }
 
-.main > textarea {
+.user-input-area {
   position: absolute;
-  width: 100%;
-  height: 20%;
-  border: 1px solid grey;
-  border-radius: 6px;
   bottom: 0;
-  resize: none;
-  padding: 5px;
-  font-family: Tahoma, sans-serif; }
+  width: 100%;
+  height: 20%; }
+  .user-input-area textarea {
+    border: none;
+    border-top: 0.05em solid grey;
+    border-radius: 6px;
+    padding: 5px;
+    padding-right: 15%;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    outline: none;
+    font-family: sans-serif, Tahoma;
+    font-size: 1.2em; }
+  .user-input-area .submit-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 2%;
+    margin-right: 5%;
+    outline: 0;
+    height: 45%; }
 
-@media screen and (max-width: 500px), screen and (max-height: 500px) {
+@media screen and (max-width: 1023px), screen and (max-height: 699px) {
   .main {
     width: 100%;
     top: 15%;
@@ -99,6 +165,36 @@ header {
     left: 0%; }
   header {
     height: 15%; }
+  .messages-header {
+    position: absolute;
+    height: 7%;
+    width: 100%; }
+    .messages-header h2 {
+      margin: 0.4em 1em;
+      line-height: 1em;
+      font-size: 3.5vh; }
+    .messages-header aside {
+      position: absolute;
+      display: inline;
+      right: 0; }
+  .message-box {
+    margin: 2% 2%;
+    min-width: 25%;
+    max-width: 60%;
+    border-radius: 10px; }
+  .message-text {
+    margin: 0;
+    margin-top: 5px;
+    font-size: 1em; }
+  .messages {
+    list-style-type: none;
+    padding: 0;
+    position: absolute;
+    width: 95%;
+    max-height: 72%;
+    margin: 0% 2.5%;
+    bottom: 21%;
+    overflow-y: auto; }
   .logo {
     display: block;
     margin: auto;
