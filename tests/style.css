@@ -1,0 +1,26 @@
+html {
+    font-family: 'Indie Flower', cursive;
+    font-size: 1em;
+}
+
+.blue_background {
+    background-color: #293f50;
+}
+
+#nav_links {
+    text-transform: uppercase;
+    color: white;
+    display:flex;
+    list-style:none;
+}
+
+#top_title{
+    text-transform: uppercase;
+}
+
+        /*@media (min-width: 600px) {
+            html{
+                background-color: blueviolet;
+                font-size: 1.5rem;
+            }
+        }*/
