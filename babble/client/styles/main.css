@@ -161,7 +161,8 @@ header {
   display: block; }
 
 .message-time {
-  font-size: 0.8em; }
+  font-size: 0.8em;
+  margin-left: 5px; }
 
 .message-name {
   font-weight: bold;
@@ -194,7 +195,7 @@ header {
     outline: 0;
     height: 45%; }
 
-@media screen and (max-width: 1023px), screen and (max-height: 699px) {
+@media screen and (max-width: 1023px), screen and (max-height: 626px) {
   .main {
     width: 100%;
     top: 15%;
