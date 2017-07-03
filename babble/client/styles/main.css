@@ -40,6 +40,9 @@ header {
 .Modal > .close:active {
   display: none; }
 
+form {
+  margin: 0; }
+
 .left-pane {
   position: absolute;
   width: 15%;
@@ -117,6 +120,7 @@ header {
 .message-box {
   background-color: white;
   display: inline-block;
+  word-wrap: break-word;
   margin: 0.5% 2%;
   padding: 10px 15px;
   min-width: 25%;

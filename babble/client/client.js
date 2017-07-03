@@ -92,9 +92,9 @@ function makeTimePretty(time) {
     return time;
 }
 
-function addMessageToChat() {
+function addMessageToChat(userInput) {
     var holeMessage = document.createElement("li");
-    var userInput = document.querySelector('.' + classNames.inputArea + ' textarea').value;
+    // var userInput = document.querySelector('.' + classNames.inputArea + ' textarea').value;
 
     profileImage = createMessageProfilePic('profilePic.jpg');
     messageBox = createMessageBox(userInput, 'Dolev Nishlis', returnCurrentTime());
@@ -107,3 +107,33 @@ function addMessageToChat() {
 
     messages.scrollTop = messages.scrollHeight;
 }
+
+console.log('hello from client');
+
+var form = document.querySelector('form');
+var counter = 0;
+
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    console.log(form.action);
+    var data = '';
+    for (var i = 0; i < form.elements.length; i++) {
+        var element = form.elements[i];
+        if (element.name) {
+            data += element.name + '=' + encodeURIComponent(element.value) + '&';
+        }
+    }
+
+    data += 'counter' + '=' + encodeURIComponent(counter);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open(form.method, form.action);
+    if (form.method === 'post') {
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    }
+    xhr.addEventListener('load', function(e) {
+        addMessageToChat(e.target.responseText);
+        console.log(e.target.responseText);
+    });
+    xhr.send(data);
+});

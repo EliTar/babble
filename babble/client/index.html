@@ -3,8 +3,6 @@
 <head>
     <title>Vegans - Babble</title>
     <link rel="stylesheet" href="styles/main.css" type="text/css">
-    <script src="client.js"></script>
-
     <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 
@@ -86,21 +84,24 @@
         <!--addMessageToChat - not logically true. Later on, will change to submit message.-->
 
         <section class="user-input-area">
-            <textarea>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae reiciendis aperiam voluptate quos debitis earum, eveniet ratione optio, eos aut nisi delectus suscipit eius dignissimos! Asperiores saepe sunt corrupti necessitatibus vero sapiente nesciunt culpa ipsa. Numquam illum ex hic, sed, tenetur voluptate quidem dolores repellendus rem, asperiores sapiente officia iusto.</textarea>
-            <input type="image" class="submit-icon" onclick="addMessageToChat()" src="send.png">
+            <form action="http://localhost:9097" method="POST" id="userform" style="margin: 0">
+                <textarea name="message" form="userform">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae reiciendis aperiam voluptate quos debitis earum, eveniet ratione optio, eos aut nisi delectus suscipit eius dignissimos! Asperiores saepe sunt corrupti necessitatibus vero sapiente nesciunt culpa ipsa. Numquam illum ex hic, sed, tenetur voluptate quidem dolores repellendus rem, asperiores sapiente officia iusto.</textarea>
+                <!--<input type="image" class="submit-icon" onclick="addMessageToChat()" src="send.png">-->
+                <input type="image" class="submit-icon" src="send.png">
+            </form>
         </section>
-
     </section>
 
-    <!--<div class="Modal" id="register">
-        <form action="">
-            <label for="email">Your email please</label>
-            <input type="email" />
+    <!--<div class="Modal " id="register ">
+        <form action=" ">
+            <label for="email ">Your email please</label>
+            <input type="email " />
             <button>Register</button>
         </form>
-        <a class="close" href="">Close</a>
+        <a class="close " href=" ">Close</a>
     </div>-->
 
+    <script src="client.js"></script>
 </body>
 
 </html>
