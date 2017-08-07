@@ -102,20 +102,122 @@ function addMessageToChat(userInput) {
     holeMessage.appendChild(profileImage);
     holeMessage.appendChild(messageBox);
 
-    var messages = document.querySelector('.' + classNames.messages)
+    var messages = document.querySelector('.' + classNames.messages);
     messages.appendChild(holeMessage);
 
     messages.scrollTop = messages.scrollHeight;
 }
 
-console.log('hello from client');
+function userInfo(name, email) {
+    this.name = name;
+    this.email = email;
+}
 
-var form = document.querySelector('form');
+function message(name, email, message, timestamp) {
+    this.name = name;
+    this.email = email;
+    this.message = message;
+    this.timestamp = timestamp;
+}
+
+function register(userInfo) {
+    var babble = { "currentMessage": "", "userInfo": userInfo };
+    localStorage.setItem('babble', JSON.stringify(babble));
+}
+
+function getMessages(counter, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:9097/poll?counter=' + counter);
+    xhr.addEventListener('load', function(e) {
+        callback(e);
+    });
+    xhr.send();
+}
+
+
+
+function proccessMessages(rawMessages) {
+    var messages = JSON.parse(rawMessages.target.responseText);
+    messageCount += messages.length;
+
+    getMessages(counter, proccessMessages);
+}
+
 var counter = 0;
 
+// modal.addEventListener('submit', function(e) {
+//     e.preventDefault();
+
+//     var userInformation = new userInfo(modal.name.value, modal.email.value);
+//     register(userInformation);
+// });
+
+console.log('hello from client');
+
+var dialog = document.querySelector('dialog');
+var modalForm = document.querySelector('dialog > form');
+dialogPolyfill.registerDialog(dialog);
+dialog.showModal();
+
+dialog.addEventListener('close', function(event) {
+    if (dialog.returnValue == 'save') {
+        var userInformation = new userInfo(modalForm.name.value, modalForm.email.value);
+        register(userInformation);
+    } else {
+        var userInformation = new userInfo('anonymous', 'anonymous');
+        register(userInformation);
+    }
+});
+
+var form = document.querySelector('section > form');
+var userText = document.querySelector('textarea');
+
+// Update the local storage to current message
+userText.addEventListener("keyup", function(evt) {
+    var localState = JSON.parse(localStorage.babble);
+    localState.currentMessage = userText.value;
+    localStorage.setItem('babble', JSON.stringify(localState));
+}, false);
+
+function postMessage(message, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open(form.method, form.action);
+    if (form.method === 'post') {
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    }
+    xhr.addEventListener('load', function(e) {
+        callback(e);
+    });
+    xhr.send(data);
+}
+
+// Figure this out!
+function doNothing(e) {
+    // does nothing
+}
+
+// form.addEventListener('submit', function(e) {
+//     e.preventDefault();
+
+//     var parseLocalDate = JSON.parse(localStorage.babble);
+//     var userMessage = {
+//         "name": parseLocalDate.name,
+//         "email": parseLocalDate.email,
+//         "message": parseLocalDate.currentMessage,
+//         "timestamp": Data.now()
+//     };
+
+//     console.log(form.action);
+//     postMessage(userMessage, doNothing);
+// });
+
 form.addEventListener('submit', function(e) {
+    var parseLocalDate = JSON.parse(localStorage.babble);
+    var userMessage = { "currentMessage": parseLocalDate.currentMessage, "counter": counter };
+
     e.preventDefault();
     console.log(form.action);
+    console.log(userMessage);
     var data = '';
     for (var i = 0; i < form.elements.length; i++) {
         var element = form.elements[i];

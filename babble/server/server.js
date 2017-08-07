@@ -1,36 +1,16 @@
-// var http = require('http');
-
-// var server = http.createServer(function(request, response) {
-//     console.log(request.url);
-//     response.end();
-// });
-
-// server.listen(9000);
-
-// console.log("hello");
-
-// var http = require('http'),
-//     url = require('url'),
-//     fs = require('fs');
-
-// var messages = ['testing'];
-// var clients = [];
-
-// http.createServer(function(req, res) {
-//     res.end("Hello world");
-// }).listen(8080, 'localhost');
-// console.log('Server running.');
-
 var http = require('http');
 var urlUtil = require('url');
 var queryUtil = require('querystring');
 
 var server = http.createServer(function(request, response) {
-
+    console.log('Handling request URL: %s', request.url);
     response.setHeader('Access-Control-Allow-Origin', '*');
 
+    var url = urlUtil.parse(request.url, true);
+    console.log("Request is: " + url.pathname);
+
     if (request.method === 'GET') {
-        var url = urlUtil.parse(request.url);
+        //var url = urlUtil.parse(request.url);
         var data = queryUtil.parse(url.query);
         console.log(data.message);
         if (!data.message) {
