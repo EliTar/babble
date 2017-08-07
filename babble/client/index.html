@@ -3,6 +3,7 @@
 <head>
     <title>Vegans - Babble</title>
     <link rel="stylesheet" href="styles/main.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="styles/dialog-polyfill.css">
     <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 
@@ -84,7 +85,7 @@
         <!--addMessageToChat - not logically true. Later on, will change to submit message.-->
 
         <section class="user-input-area">
-            <form action="http://localhost:9097" method="POST" id="userform" style="margin: 0">
+            <form action="http://localhost:9097/messages" method="POST" id="userform" style="margin: 0">
                 <textarea name="message" form="userform">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae reiciendis aperiam voluptate quos debitis earum, eveniet ratione optio, eos aut nisi delectus suscipit eius dignissimos! Asperiores saepe sunt corrupti necessitatibus vero sapiente nesciunt culpa ipsa. Numquam illum ex hic, sed, tenetur voluptate quidem dolores repellendus rem, asperiores sapiente officia iusto.</textarea>
                 <!--<input type="image" class="submit-icon" onclick="addMessageToChat()" src="send.png">-->
                 <input type="image" class="submit-icon" src="send.png">
@@ -92,15 +93,21 @@
         </section>
     </section>
 
-    <!--<div class="Modal " id="register ">
-        <form action=" ">
-            <label for="email ">Your email please</label>
-            <input type="email " />
-            <button>Register</button>
+    <dialog>
+        <form method="dialog">
+            <p>Who are you?</p>
+            <label for="email">Your email please</label>
+            <input type="email" name="email" />
+            <br>
+            <label for="name">Your name please</label>
+            <input type="name" name="name" />
+            <br>
+            <button type="submit" value="anonymous">Stay Anonymous</button>
+            <button type="submit" value="save" autofocus>Save</button>
         </form>
-        <a class="close " href=" ">Close</a>
-    </div>-->
+    </dialog>
 
+    <script src="dialog-polyfill.js"></script>
     <script src="client.js"></script>
 </body>
 
