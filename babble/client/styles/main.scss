@@ -12,6 +12,7 @@ $message-header-height: 10%;
 $message-header-height-phone: 7%;
 $messages-pane-width: 95%;
 $seperator-height: 1%;
+// font name is Nunito
 header {
     position: absolute;
     width: 100%;
@@ -36,6 +37,14 @@ header {
     bottom: 0;
     right: 0px;
     background-color: $main-chat-color;
+}
+
+// npm install dialog-polyfill
+dialog {
+    display: none;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
 }
 
 .Modal {
