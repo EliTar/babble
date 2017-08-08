@@ -85,6 +85,14 @@ function returnCurrentTime() {
     return h + ':' + m;
 }
 
+function parseTime(time) {
+    var userTime = new Date(time);
+    var h = makeTimePretty(userTime.getHours());
+    var m = makeTimePretty(userTime.getMinutes());
+
+    return h + ':' + m;
+}
+
 function makeTimePretty(time) {
     if (time >= 0 && time <= 9) {
         time = '0' + time;
@@ -92,12 +100,27 @@ function makeTimePretty(time) {
     return time;
 }
 
-function addMessageToChat(userInput) {
+// function addMessageToChat(userInput) {
+//     var holeMessage = document.createElement("li");
+//     // var userInput = document.querySelector('.' + classNames.inputArea + ' textarea').value;
+
+//     profileImage = createMessageProfilePic('profilePic.jpg');
+//     messageBox = createMessageBox(userInput, 'Dolev Nishlis', returnCurrentTime());
+
+//     holeMessage.appendChild(profileImage);
+//     holeMessage.appendChild(messageBox);
+
+//     var messages = document.querySelector('.' + classNames.messages);
+//     messages.appendChild(holeMessage);
+
+//     messages.scrollTop = messages.scrollHeight;
+// }
+
+function addMessageToChat(message) {
     var holeMessage = document.createElement("li");
-    // var userInput = document.querySelector('.' + classNames.inputArea + ' textarea').value;
 
     profileImage = createMessageProfilePic('profilePic.jpg');
-    messageBox = createMessageBox(userInput, 'Dolev Nishlis', returnCurrentTime());
+    messageBox = createMessageBox(message.message, message.name, parseTime(message.timestamp));
 
     holeMessage.appendChild(profileImage);
     holeMessage.appendChild(messageBox);
@@ -127,19 +150,21 @@ function register(userInfo) {
 
 function getMessages(counter, callback) {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:9097/poll?counter=' + counter);
+    xhr.open('GET', 'http://localhost:9097/messages?counter=' + counter);
     xhr.addEventListener('load', function(e) {
-        callback(e);
+        callback(counter, e);
     });
     xhr.send();
 }
 
-
-
-function proccessMessages(rawMessages) {
+function proccessMessages(counter, rawMessages) {
     var messages = JSON.parse(rawMessages.target.responseText);
-    messageCount += messages.length;
 
+    messages.forEach(function(message) {
+        addMessageToChat(message);
+    });
+
+    counter += messages.length;
     getMessages(counter, proccessMessages);
 }
 
@@ -167,6 +192,7 @@ dialog.addEventListener('close', function(event) {
         var userInformation = new userInfo('anonymous', 'anonymous');
         register(userInformation);
     }
+    getMessages(counter, proccessMessages);
 });
 
 var form = document.querySelector('section > form');
@@ -188,7 +214,9 @@ function postMessage(message, callback) {
     xhr.addEventListener('load', function(e) {
         callback(e);
     });
-    xhr.send(data);
+    console.log(form.action + " and method is " + form.method);
+    console.log(message);
+    xhr.send(JSON.stringify(message));
 }
 
 // Figure this out!
@@ -196,46 +224,45 @@ function doNothing(e) {
     // does nothing
 }
 
-// form.addEventListener('submit', function(e) {
-//     e.preventDefault();
-
-//     var parseLocalDate = JSON.parse(localStorage.babble);
-//     var userMessage = {
-//         "name": parseLocalDate.name,
-//         "email": parseLocalDate.email,
-//         "message": parseLocalDate.currentMessage,
-//         "timestamp": Data.now()
-//     };
-
-//     console.log(form.action);
-//     postMessage(userMessage, doNothing);
-// });
-
 form.addEventListener('submit', function(e) {
-    var parseLocalDate = JSON.parse(localStorage.babble);
-    var userMessage = { "currentMessage": parseLocalDate.currentMessage, "counter": counter };
-
     e.preventDefault();
-    console.log(form.action);
-    console.log(userMessage);
-    var data = '';
-    for (var i = 0; i < form.elements.length; i++) {
-        var element = form.elements[i];
-        if (element.name) {
-            data += element.name + '=' + encodeURIComponent(element.value) + '&';
-        }
-    }
 
-    data += 'counter' + '=' + encodeURIComponent(counter);
+    var parseLocalDate = JSON.parse(localStorage.babble);
+    var userMessage = {
+        "name": parseLocalDate.userInfo.name,
+        "email": parseLocalDate.userInfo.email,
+        "message": parseLocalDate.currentMessage,
+        "timestamp": Date.now()
+    };
 
-    var xhr = new XMLHttpRequest();
-    xhr.open(form.method, form.action);
-    if (form.method === 'post') {
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    }
-    xhr.addEventListener('load', function(e) {
-        addMessageToChat(e.target.responseText);
-        console.log(e.target.responseText);
-    });
-    xhr.send(data);
+    postMessage(userMessage, doNothing);
 });
+
+// form.addEventListener('submit', function(e) {
+//     var parseLocalDate = JSON.parse(localStorage.babble);
+//     var userMessage = { "currentMessage": parseLocalDate.currentMessage, "counter": counter };
+
+//     e.preventDefault();
+//     console.log(form.action);
+//     console.log(userMessage);
+//     var data = '';
+//     for (var i = 0; i < form.elements.length; i++) {
+//         var element = form.elements[i];
+//         if (element.name) {
+//             data += element.name + '=' + encodeURIComponent(element.value) + '&';
+//         }
+//     }
+
+//     data += 'counter' + '=' + encodeURIComponent(counter);
+
+//     var xhr = new XMLHttpRequest();
+//     xhr.open(form.method, form.action);
+//     if (form.method === 'post') {
+//         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+//     }
+//     xhr.addEventListener('load', function(e) {
+//         addMessageToChat(e.target.responseText);
+//         console.log(e.target.responseText);
+//     });
+//     xhr.send(data);
+// });

@@ -4,6 +4,8 @@
     <title>Vegans - Babble</title>
     <link rel="stylesheet" href="styles/main.css" type="text/css">
     <link rel="stylesheet" type="text/css" href="styles/dialog-polyfill.css">
+    <!-- TODO: Check this -->
+    <link rel="shortcut icon" href="">
     <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 
@@ -28,7 +30,7 @@
         </seciton>
 
         <ul class="messages">
-            <li>
+            <!-- <li>
                 <img class="message-image" src="profilePic.jpg">
                 <article class="message-box">
                     <button class="message-close" onclick="hideMessage(this)">x</button>
@@ -37,47 +39,7 @@
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis, similique.
                     </p>
                 </article>
-            </li>
-            <li>
-                <img class="message-image" src="profilePic.jpg">
-                <article class="message-box">
-                    <button class="message-close" onclick="hideMessage(this)">x</button>
-                    <cite class="message-name">Dolev Nishlis</cite><time datetime="08:00+03:00" class="message-time">15:03</time>
-                    <p class="message-text">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae laborum dolorum accusantium repellendus aliquid non perspiciatis, autem, rerum natus.
-                    </p>
-                </article>
-            </li>
-            <li>
-                <img class="message-image" src="profilePic.jpg">
-                <article class="message-box">
-                    <button class="message-close" onclick="hideMessage(this)">x</button>
-                    <cite class="message-name">Dolev Nishlis</cite><time datetime="08:00+03:00" class="message-time">15:03</time>
-                    <p class="message-text">
-                        Lorem ipsum dolor.
-                    </p>
-                </article>
-            </li>
-            <li>
-                <img class="message-image" src="profilePic.jpg">
-                <article class="message-box">
-                    <button class="message-close" onclick="hideMessage(this)">x</button>
-                    <cite class="message-name">Dolev Nishlis</cite><time datetime="08:00+03:00" class="message-time">15:03</time>
-                    <p class="message-text">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing.
-                    </p>
-                </article>
-            </li>
-            <li>
-                <img class="message-image" src="profilePic.jpg">
-                <article class="message-box">
-                    <button class="message-close" onclick="hideMessage(this)">x</button>
-                    <cite class="message-name">Dolev Nishlis</cite><time datetime="08:00+03:00" class="message-time">15:03</time>
-                    <p class="message-text">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore sit, omnis dolor.
-                    </p>
-                </article>
-            </li>
+            </li> -->
         </ul>
 
         <div class="messages-input-text-seperator"></div>
@@ -86,7 +48,7 @@
 
         <section class="user-input-area">
             <form action="http://localhost:9097/messages" method="POST" id="userform" style="margin: 0">
-                <textarea name="message" form="userform">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae reiciendis aperiam voluptate quos debitis earum, eveniet ratione optio, eos aut nisi delectus suscipit eius dignissimos! Asperiores saepe sunt corrupti necessitatibus vero sapiente nesciunt culpa ipsa. Numquam illum ex hic, sed, tenetur voluptate quidem dolores repellendus rem, asperiores sapiente officia iusto.</textarea>
+                <textarea name="message" form="userform" placeholder='Enter message...'></textarea>
                 <!--<input type="image" class="submit-icon" onclick="addMessageToChat()" src="send.png">-->
                 <input type="image" class="submit-icon" src="send.png">
             </form>
