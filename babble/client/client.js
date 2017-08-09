@@ -14,6 +14,16 @@ function hideMessage(element) {
     toHide.style.display = "none";
 }
 
+function hideMessageByID(id, serverConfirmation) {
+    var confirmation = JSON.parse(serverConfirmation.target.responseText);
+    if (confirmation === true) {
+        matching = matchIdAndTimestamp.filter(function(message) { return message.id === id; });
+        timestampToDelete = matching[0].timestamp;
+        toHide = document.getElementById(timestampToDelete);
+        toHide.style.display = "none";
+    }
+}
+
 function createMessageProfilePic(imgPath) {
     var profileImage = document.createElement('img');
     profileImage.setAttribute('src', imgPath);
@@ -22,11 +32,30 @@ function createMessageProfilePic(imgPath) {
     return profileImage;
 }
 
+function deleteMessage(id, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('DELETE', 'http://localhost:9097/messages/' + id, true);
+    xhr.setRequestHeader('X-Custom-Header', 'value');
+    xhr.addEventListener('load', function(e) {
+        callback(id, e);
+    });
+    xhr.send();
+}
+
+function invokeDeleteMessage(element) {
+    var messageToDelete = element.closest('li');
+    timestampOfIdToDelete = messageToDelete.getAttribute('id');
+    matching = matchIdAndTimestamp.filter(function(message) { return message.timestamp == timestampOfIdToDelete; });
+    idToDelete = matching[0].id;
+
+    deleteMessage(idToDelete, hideMessageByID);
+}
+
 function createExitButton() {
     var button = document.createElement('button');
     var buttonText = document.createTextNode('x');
     button.setAttribute('class', classNames.messageX);
-    button.setAttribute('onclick', 'hideMessage(this)');
+    button.setAttribute('onclick', 'invokeDeleteMessage(this)');
     button.appendChild(buttonText);
 
     return button;
@@ -60,16 +89,19 @@ function createMessageContent(userContent) {
     return paragraph;
 }
 
-function createMessageBox(userText, userName, userMessageTime) {
+function createMessageBox(userText, userName, userMessageTime, userEmail) {
     var messageBox = document.createElement('article');
     messageBox.setAttribute('class', classNames.messageBox);
 
-    var button = createExitButton();
+    if (userEmail === JSON.parse(localStorage.babble).userInfo.email) {
+        var button = createExitButton();
+        messageBox.appendChild(button);
+    }
+
     var name = createMessageName(userName);
     var time = createMessageTime(userMessageTime);
     var paragraph = createMessageContent(userText);
 
-    messageBox.appendChild(button);
     messageBox.appendChild(name);
     messageBox.appendChild(time);
     messageBox.appendChild(paragraph);
@@ -118,9 +150,10 @@ function makeTimePretty(time) {
 
 function addMessageToChat(message) {
     var holeMessage = document.createElement("li");
+    holeMessage.setAttribute('id', message.timestamp);
 
     profileImage = createMessageProfilePic('profilePic.jpg');
-    messageBox = createMessageBox(message.message, message.name, parseTime(message.timestamp));
+    messageBox = createMessageBox(message.message, message.name, parseTime(message.timestamp), message.email);
 
     holeMessage.appendChild(profileImage);
     holeMessage.appendChild(messageBox);
@@ -212,16 +245,20 @@ function postMessage(message, callback) {
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     }
     xhr.addEventListener('load', function(e) {
-        callback(e);
+        callback(e, message.timestamp);
     });
     console.log(form.action + " and method is " + form.method);
     console.log(message);
     xhr.send(JSON.stringify(message));
 }
 
+var matchIdAndTimestamp = [];
+
 // Figure this out!
-function doNothing(e) {
-    // does nothing
+function trackUserMessages(e, timestamp) {
+    serverResponse = JSON.parse(e.target.responseText);
+    var messageIdAndTimestemp = { "id": serverResponse.id, "timestamp": timestamp };
+    matchIdAndTimestamp.push(messageIdAndTimestemp);
 }
 
 form.addEventListener('submit', function(e) {
@@ -235,7 +272,7 @@ form.addEventListener('submit', function(e) {
         "timestamp": Date.now()
     };
 
-    postMessage(userMessage, doNothing);
+    postMessage(userMessage, trackUserMessages);
 });
 
 // form.addEventListener('submit', function(e) {
