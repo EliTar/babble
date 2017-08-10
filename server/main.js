@@ -65,7 +65,7 @@ var server = http.createServer(function(request, response) {
             response.setHeader('Access-Control-Allow-Headers', 'X-Custom-Header');
             // response.writeHead(204);
             // response.write(http.STATUS_CODES[204] + '\n');
-            response.end();
+            response.end(JSON.stringify(204));
         }
     }
 });

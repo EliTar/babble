@@ -1,0 +1,29 @@
+{
+    "name": "babble",
+    "version": "1.0.0",
+    "description": "Web-based responsive chat with one room",
+    "main": "server/server.js",
+    "scripts": {
+        "test": "test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/EliTar/clientSide.git"
+    },
+    "keywords": [
+        "chat"
+    ],
+    "author": "Eli Tarnarutsky",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/EliTar/clientSide/issues"
+    },
+    "homepage": "https://github.com/EliTar/clientSide#readme",
+    "dependencies": {
+        "dialog-polyfill": "^0.4.8",
+        "http-server": "^0.10.0"
+    },
+    "devDependencies": {
+        "nodemon": "^1.11.0"
+    }
+}

@@ -136,7 +136,7 @@ function makeTimePretty(time) {
 //     var holeMessage = document.createElement("li");
 //     // var userInput = document.querySelector('.' + classNames.inputArea + ' textarea').value;
 
-//     profileImage = createMessageProfilePic('profilePic.jpg');
+//     profileImage = createMessageProfilePic('images/profilePic.jpg');
 //     messageBox = createMessageBox(userInput, 'Dolev Nishlis', returnCurrentTime());
 
 //     holeMessage.appendChild(profileImage);
@@ -152,7 +152,7 @@ function addMessageToChat(message) {
     var holeMessage = document.createElement("li");
     holeMessage.setAttribute('id', message.timestamp);
 
-    profileImage = createMessageProfilePic('profilePic.jpg');
+    profileImage = createMessageProfilePic('images/profilePic.jpg');
     messageBox = createMessageBox(message.message, message.name, parseTime(message.timestamp), message.email);
 
     holeMessage.appendChild(profileImage);

@@ -11,7 +11,7 @@
 
 <body>
     <header>
-        <img class="logo" src="logo.png" alt="logo">
+        <img class="logo" src="images/logo.png" alt="logo">
     </header>
     <nav class="left-pane"></nav>
 
@@ -22,16 +22,16 @@
                 Vegans
             </h2>
             <aside class="stats">
-                <img class="stats-icons" src="message.png">
+                <img class="stats-icons" src="images/message.png">
                 <p class="stats-caption">7</p>
-                <img class="stats-icons" src="smallMan.png">
+                <img class="stats-icons" src="images/smallMan.png">
                 <p class="stats-caption">6</p>
             </aside>
         </seciton>
 
         <ul class="messages">
             <!-- <li>
-                <img class="message-image" src="profilePic.jpg">
+                <img class="message-image" src="images/profilePic.jpg">
                 <article class="message-box">
                     <button class="message-close" onclick="hideMessage(this)">x</button>
                     <cite class="message-name">Dolev Nishlis</cite><time datetime="08:00+03:00" class="message-time">15:03</time>
@@ -49,8 +49,8 @@
         <section class="user-input-area">
             <form action="http://localhost:9097/messages" method="POST" id="userform" style="margin: 0">
                 <textarea name="message" form="userform" placeholder='Enter message...'></textarea>
-                <!--<input type="image" class="submit-icon" onclick="addMessageToChat()" src="send.png">-->
-                <input type="image" class="submit-icon" src="send.png">
+                <!--<input type="image" class="submit-icon" onclick="addMessageToChat()" src="images/send.png">-->
+                <input type="image" class="submit-icon" src="images/send.png">
             </form>
         </section>
     </section>
@@ -69,8 +69,8 @@
         </form>
     </dialog>
 
-    <script src="dialog-polyfill.js"></script>
-    <script src="client.js"></script>
+    <script src="scripts/dialog-polyfill.js"></script>
+    <script src="scripts/main.js"></script>
 </body>
 
 </html>
