@@ -73,10 +73,13 @@ form {
   background-color: #EBEDEC; }
 
 .stats {
-  margin-top: 2%;
+  display: inline;
   margin-right: 4%;
-  text-align: right;
-  width: 10%; }
+  text-align: right; }
+
+dt,
+dd {
+  display: inline; }
 
 .stats-caption {
   display: inline;
@@ -85,7 +88,7 @@ form {
   font-size: 1.5em; }
 
 .stats-icons {
-  height: 1.1em;
+  display: inline;
   margin-left: 10%; }
 
 .messages {

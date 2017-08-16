@@ -4,7 +4,33 @@ var queryUtil = require('querystring');
 
 var messages = [];
 var waitingClients = [];
+var statsWaitList = [];
 var messagesID = 0;
+
+function updateStats() {
+    // console.log("Number of messages is " + messagesID);
+    // console.log("Number of users is " + onlineClients);
+    // statsWaitList.forEach(function(client) {
+    //     var stats = {
+    //         "users": waitingClients.length,
+    //         "messages": messagesID
+    //     };
+    //     client.response.end(JSON.stringify(stats));
+    // });
+
+    var tempLength = statsWaitList.length;
+
+    while (statsWaitList.length > 0) {
+        var client = statsWaitList.pop();
+        var stats = {
+            "users": Math.max(waitingClients.length, tempLength),
+            "messages": messagesID
+        };
+        client.response.end(JSON.stringify(stats));
+    }
+
+    // statsWaitList.length = 0;
+}
 
 var server = http.createServer(function(request, response) {
     console.log('Handling request URL: %s', request.url);
@@ -19,9 +45,14 @@ var server = http.createServer(function(request, response) {
             var counter = Number(url.query.counter);
             console.log("Counter is " + counter);
             if (messages.length > counter) {
+                if (counter == 0)
+                    updateStats();
                 response.end(JSON.stringify(messages.slice(counter, messages.length)));
             } else {
                 waitingClients.push({ request: request, response: response, counter: counter });
+                // statsWaitList.length > waitingClients.length || 
+                if (messages.length == 0)
+                    updateStats();
             }
         }
         if (request.method === 'POST') {
@@ -30,7 +61,7 @@ var server = http.createServer(function(request, response) {
                 requestBody += chunk.toString();
             });
             request.on('end', function() {
-                // var data = queryUtil.parse(requestBody);
+                // var data = queryUtil.parse(requestBody); 
                 var data = JSON.parse(requestBody);
                 // console.log(data);
                 // console.log(data.name);
@@ -43,6 +74,8 @@ var server = http.createServer(function(request, response) {
                     // console.log(messages.slice(client.counter, messages.length));
                     client.response.end(JSON.stringify(messages.slice(client.counter, messages.length)));
                 });
+                updateStats();
+                waitingClients.length = 0;
                 // console.log('we have all the data ', data);
 
                 var userMessageID = { "id": receivedMessage.id };
@@ -68,6 +101,13 @@ var server = http.createServer(function(request, response) {
             response.end(JSON.stringify(204));
         }
     }
+
+    if (url.pathname.startsWith('/stats')) {
+        if (request.method === 'GET') {
+            statsWaitList.push({ request: request, response: response });
+        }
+    }
+
 });
 
 server.listen(9097);

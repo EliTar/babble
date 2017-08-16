@@ -190,6 +190,26 @@ function getMessages(counter, callback) {
     xhr.send();
 }
 
+function updateStats(e) {
+    var stats = JSON.parse(e.target.responseText);
+    var mesCounterObject = document.querySelector('dd:first-of-type');
+    var userCounterObject = document.querySelector('dd:last-of-type');
+
+    mesCounterObject.innerText = stats.messages;
+    userCounterObject.innerText = stats.users;
+
+    getStats(updateStats);
+}
+
+function getStats(callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:9097/stats');
+    xhr.addEventListener('load', function(e) {
+        callback(e);
+    });
+    xhr.send();
+}
+
 function proccessMessages(counter, rawMessages) {
     var messages = JSON.parse(rawMessages.target.responseText);
 
@@ -225,6 +245,7 @@ dialog.addEventListener('close', function(event) {
         var userInformation = new userInfo('anonymous', 'anonymous');
         register(userInformation);
     }
+    getStats(updateStats);
     getMessages(counter, proccessMessages);
 });
 
@@ -254,7 +275,6 @@ function postMessage(message, callback) {
 
 var matchIdAndTimestamp = [];
 
-// Figure this out!
 function trackUserMessages(e, timestamp) {
     serverResponse = JSON.parse(e.target.responseText);
     var messageIdAndTimestemp = { "id": serverResponse.id, "timestamp": timestamp };

@@ -103,10 +103,14 @@ form {
 }
 
 .stats {
-    margin-top: 2%;
+    display: inline;
     margin-right: 4%;
     text-align: right;
-    width: 10%;
+}
+
+dt,
+dd {
+    display: inline;
 }
 
 .stats-caption {
@@ -117,7 +121,7 @@ form {
 }
 
 .stats-icons {
-    height: 1.1em;
+    display: inline;
     margin-left: 10%;
 }
 
