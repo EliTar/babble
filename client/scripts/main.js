@@ -35,7 +35,7 @@ function createMessageProfilePic(imgPath) {
 function deleteMessage(id, callback) {
     var xhr = new XMLHttpRequest();
     xhr.open('DELETE', 'http://localhost:9097/messages/' + id, true);
-    xhr.setRequestHeader('X-Custom-Header', 'value');
+    // xhr.setRequestHeader('X-Request-ID', 'value');
     xhr.addEventListener('load', function(e) {
         callback(id, e);
     });
@@ -181,9 +181,18 @@ function register(userInfo) {
     localStorage.setItem('babble', JSON.stringify(babble));
 }
 
+var currentUUID = 0;
+
+// Took from this cool guy https://gist.github.com/jed/982883
+function generateUUID(a) {
+    return a ? (a ^ Math.random() * 16 >> a / 4).toString(16) : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, generateUUID);
+}
+
 function getMessages(counter, callback) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'http://localhost:9097/messages?counter=' + counter);
+    currentUUID = generateUUID();
+    xhr.setRequestHeader('X-Request-ID', currentUUID);
     xhr.addEventListener('load', function(e) {
         callback(counter, e);
     });
@@ -258,6 +267,11 @@ userText.addEventListener("keyup", function(evt) {
     localState.currentMessage = userText.value;
     localStorage.setItem('babble', JSON.stringify(localState));
 }, false);
+
+window.addEventListener('unload', function() {
+    navigator.sendBeacon('http://localhost:9097/logout', JSON.stringify(currentUUID));
+});
+
 
 function postMessage(message, callback) {
     var xhr = new XMLHttpRequest();
