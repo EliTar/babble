@@ -25,9 +25,13 @@ function hideMessageByID(id, serverConfirmation) {
 }
 
 function createMessageProfilePic(imgPath) {
-    var profileImage = document.createElement('img');
-    profileImage.setAttribute('src', imgPath);
-    profileImage.setAttribute('class', classNames.messageImg);
+    // var profileImage = document.createElement('img');
+    // profileImage.setAttribute('src', imgPath);
+    // profileImage.setAttribute('class', classNames.messageImg);
+
+    var profileImage = new Image();
+    profileImage.src = imgPath;
+    profileImage.className = classNames.messageImg;
 
     return profileImage;
 }
@@ -149,19 +153,22 @@ function makeTimePretty(time) {
 // }
 
 function addMessageToChat(message) {
+    var messages = document.querySelector('.' + classNames.messages);
+
     var holeMessage = document.createElement("li");
     holeMessage.setAttribute('id', message.timestamp);
 
-    profileImage = createMessageProfilePic('images/profilePic.jpg');
+    profileURL = 'https://www.gravatar.com/avatar/' + message.emailHash + '.jpg?d=identicon';
+    profileImage = createMessageProfilePic(encodeURI(profileURL));
     messageBox = createMessageBox(message.message, message.name, parseTime(message.timestamp), message.email);
 
     holeMessage.appendChild(profileImage);
     holeMessage.appendChild(messageBox);
 
-    var messages = document.querySelector('.' + classNames.messages);
-    messages.appendChild(holeMessage);
-
-    messages.scrollTop = messages.scrollHeight;
+    profileImage.addEventListener("load", function() {
+        messages.appendChild(holeMessage);
+        messages.scrollTop = messages.scrollHeight;
+    });
 }
 
 function userInfo(name, email) {

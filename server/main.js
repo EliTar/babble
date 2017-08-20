@@ -1,6 +1,7 @@
 var http = require('http');
 var urlUtil = require('url');
 var queryUtil = require('querystring');
+var crypto = require('crypto');
 
 var messages = [];
 var waitingClients = [];
@@ -70,6 +71,7 @@ var server = http.createServer(function(request, response) {
                 // console.log(data.name);
                 var receivedMessage = data;
                 receivedMessage.id = messagesID;
+                receivedMessage.emailHash = crypto.createHash('md5').update(receivedMessage.email).digest("hex");
                 messages.push(receivedMessage);
                 messagesID++;
                 // console.log(waitingClients.length);
