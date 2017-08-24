@@ -1,12 +1,15 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Vegans - Babble</title>
-    <link rel="stylesheet" href="styles/main.css" type="text/css">
     <link rel="stylesheet" type="text/css" href="styles/dialog-polyfill.css">
+    <script src="scripts/dialog-polyfill.js"></script>
+    <link rel="stylesheet" href="styles/main.css" type="text/css">
     <!-- TODO: Check this -->
     <link rel="shortcut icon" href="">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 
 <body>
@@ -23,12 +26,12 @@
             </h2>
             <aside class="stats">
                 <dl>
-                    <dt class="stats-icon">
-                        <img src="images/message.png" aria-label="Number of messages in chat" title="Chat Messages">
+                    <dt class="stats-icons">
+                        <img src="images/message.svg" aria-label="Number of messages in chat" title="Chat Messages" alt="Messages">
                     </dt>
                     <dd class="stats-caption">0</dd>
-                    <dt class="stats-icon">
-                        <img src="images/smallMan.png" aria-label="Number of users online" title="Chat Users">
+                    <dt class="stats-icons">
+                        <img src="images/person.svg" aria-label="Number of users online" title="Chat Users" alt="Users">
                     </dt>
                     <dd class="stats-caption">0</dd>
                 </dl>
@@ -56,26 +59,34 @@
             <form action="http://localhost:9097/messages" method="POST" id="userform" style="margin: 0">
                 <textarea name="message" form="userform" placeholder='Enter message...'></textarea>
                 <!--<input type="image" class="submit-icon" onclick="addMessageToChat()" src="images/send.png">-->
-                <input type="image" class="submit-icon" src="images/send.png">
+                <input type="image" class="submit-icon" src="images/send.png" alt="send">
             </form>
         </section>
     </section>
 
     <dialog>
-        <form method="dialog">
-            <p>Who are you?</p>
-            <label for="email">Your email please</label>
-            <input type="email" name="email" />
-            <br>
-            <label for="name">Your name please</label>
-            <input type="name" name="name" />
-            <br>
-            <button type="submit" value="anonymous">Stay Anonymous</button>
-            <button type="submit" value="save" autofocus>Save</button>
+        <!-- worked by this tutorial https://webdesign.tutsplus.com/tutorials/bring-your-forms-up-to-date-with-css3-and-html5-validation-webdesign-4738 -->
+        <form method="dialog" class="modal">
+            <ul>
+                <li>
+                    <h2>Who are you?</h2>
+                </li>
+                <li>
+                    <label for="name">Full Name:</label>
+                    <input type="text" name="name" id="name" autofocus />
+                </li>
+                <li>
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" />
+                </li>
+                <li class="dialog-buttons">
+                    <button type="submit" value="anonymous">Stay Anonymous</button>
+                    <button type="submit" value="save">Save</button>
+                </li>
+            </ul>
         </form>
     </dialog>
 
-    <script src="scripts/dialog-polyfill.js"></script>
     <script src="scripts/main.js"></script>
 </body>
 

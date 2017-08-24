@@ -1,4 +1,8 @@
 $header-height: 13%;
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
 $header-height-phone: 15%;
 $left-pane-width: 15%;
 $textarea-height: 20%;
@@ -12,7 +16,11 @@ $message-header-height: 10%;
 $message-header-height-phone: 7%;
 $messages-pane-width: 95%;
 $seperator-height: 1%;
-// font name is Nunito
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
 header {
     position: absolute;
     width: 100%;
@@ -41,34 +49,58 @@ header {
 
 // npm install dialog-polyfill
 dialog {
-    display: none;
+    width: 350px;
+    height: 160px;
+    padding: 15px;
     border: 1px solid rgba(0, 0, 0, 0.3);
-    border-radius: 6px;
+    border-radius: 3px;
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    & h2 {
+        font-size: 1.5rem;
+    }
+    & ul {
+        padding: 0;
+        width: 100%;
+    }
+    & li {
+        list-style-type: none;
+        list-style-position: outside;
+        padding: 0px;
+        margin-bottom: 5px;
+        & input {
+            position: absolute;
+            border-radius: 3px;
+            border: 1px solid rgba(0, 0, 0, 0.3);
+            width: 230px;
+            right: 35px;
+        }
+    }
 }
 
-.Modal {
-    display: block;
-    border: 1px solid black;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 80%;
-    max-width: 600px;
-    max-height: 300px;
-    margin: auto;
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 0 10px 0 black;
-    //    .close:active {
-    //     display: none;
-    //     }
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
-.Modal>.close:active {
-    display: none;
+.dialog-buttons {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    button {
+        border: none;
+        padding: 5px;
+        border-radius: 2px;
+        margin-left: 8px;
+    }
+    button:first-of-type {
+        background-color: #e7e7e7;
+        color: black;
+    }
+    button:last-of-type {
+        background-color: #4CAF50;
+        padding-left: 10px;
+        padding-right: 10px;
+        color: white;
+    }
 }
 
 form {
@@ -103,7 +135,7 @@ form {
 }
 
 .stats {
-    display: inline;
+    width: 30%;
     margin-right: 4%;
     text-align: right;
 }
@@ -115,14 +147,16 @@ dd {
 
 .stats-caption {
     display: inline;
-    margin: 0;
+    margin: 0.5%;
     font-weight: bold;
     font-size: 1.5em;
 }
 
 .stats-icons {
     display: inline;
-    margin-left: 10%;
+    & img {
+        height: 2vh;
+    }
 }
 
 .messages {
@@ -246,11 +280,12 @@ dd {
     width: 100%;
     height: $textarea-height;
     & textarea {
+        position: absolute;
+        box-sizing: border-box;
         border: none;
         margin: 0;
         border-top: 0.05em solid grey;
         border-radius: 6px;
-        padding: 5px;
         padding-right: 15%;
         width: 100%;
         height: 100%;
@@ -288,7 +323,7 @@ screen and (max-height: 626px) {
         text-align: right;
         margin: 0;
         padding: 0;
-        width: 50%;
+        // width: 50%;
     }
     .stats-caption {
         display: inline;
@@ -299,8 +334,11 @@ screen and (max-height: 626px) {
     }
     .stats-icons {
         display: inline;
-        height: 2vh;
         margin-left: 3vh;
+        & img {
+            width: 10%;
+            height: 2vh;
+        }
     }
     .messages-header {
         position: absolute;

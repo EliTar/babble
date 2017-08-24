@@ -7,6 +7,7 @@ var messages = [];
 var waitingClients = [];
 var statsWaitList = [];
 var messagesID = 0;
+var numberOfDeletedMessages = 0;
 
 function updateStats(isDeleted) {
     // console.log("Number of messages is " + messagesID);
@@ -28,7 +29,7 @@ function updateStats(isDeleted) {
         var client = statsWaitList.pop();
         var stats = {
             "users": Math.max(waitingClients.length, tempLength),
-            "messages": messagesID
+            "messages": messages.length
         };
         client.response.end(JSON.stringify(stats));
     }
@@ -77,7 +78,7 @@ var server = http.createServer(function(request, response) {
                 // console.log(waitingClients.length);
                 waitingClients.forEach(function(client) {
                     // console.log(messages.slice(client.counter, messages.length));
-                    client.response.end(JSON.stringify(messages.slice(client.counter, messages.length)));
+                    client.response.end(JSON.stringify(messages.slice(client.counter - numberOfDeletedMessages, messages.length)));
                 });
                 updateStats(false);
                 waitingClients.length = 0;
@@ -94,6 +95,8 @@ var server = http.createServer(function(request, response) {
             indexOfMessageToDelete = messages.indexOf(messageToDelete[0]);
 
             messages.splice(indexOfMessageToDelete, 1);
+            numberOfDeletedMessages++;
+            updateStats(false);
 
             response.end(JSON.stringify(true));
         }
