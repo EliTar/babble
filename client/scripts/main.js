@@ -228,10 +228,15 @@ var Babble = (function() {
         holeMessage.appendChild(profileImage);
         holeMessage.appendChild(messageBox);
 
-        profileImage.addEventListener("load", function() {
-            messages.appendChild(holeMessage);
-            messages.scrollTop = messages.scrollHeight;
-        });
+        messages.appendChild(holeMessage);
+        messages.scrollTop = messages.scrollHeight;
+
+        // TODO: Had problems with timing. Rethink
+
+        // profileImage.addEventListener("load", function() {
+        //     messages.appendChild(holeMessage);
+        //     messages.scrollTop = messages.scrollHeight;
+        // });
     }
 
     function createMessageProfilePic(imgPath) {
