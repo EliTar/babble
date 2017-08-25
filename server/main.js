@@ -1,25 +1,12 @@
 var http = require('http');
 var urlUtil = require('url');
 var queryUtil = require('querystring');
-var crypto = require('crypto');
+var messages = require('./messages-util.js');
 
-var messages = [];
 var waitingClients = [];
 var statsWaitList = [];
-var messagesID = 0;
-var numberOfDeletedMessages = 0;
 
 function updateStats(isDeleted) {
-    // console.log("Number of messages is " + messagesID);
-    // console.log("Number of users is " + onlineClients);
-    // statsWaitList.forEach(function(client) {
-    //     var stats = {
-    //         "users": waitingClients.length,
-    //         "messages": messagesID
-    //     };
-    //     client.response.end(JSON.stringify(stats));
-    // });
-
     var tempLength = statsWaitList.length;
     if (isDeleted === true) {
         tempLength--;
@@ -29,7 +16,7 @@ function updateStats(isDeleted) {
         var client = statsWaitList.pop();
         var stats = {
             "users": Math.max(waitingClients.length, tempLength),
-            "messages": messages.length
+            "messages": messages.messagesArray.length
         };
         client.response.end(JSON.stringify(stats));
     }
@@ -49,14 +36,14 @@ var server = http.createServer(function(request, response) {
         if (request.method === 'GET') {
             var counter = Number(url.query.counter);
             console.log("Counter is " + counter);
-            if (messages.length > counter) {
+            if (messages.messagesArray.length > counter) {
                 if (counter == 0)
                     updateStats(false);
-                response.end(JSON.stringify(messages.slice(counter, messages.length)));
+                response.end(JSON.stringify(messages.getMessages(counter)));
             } else {
                 waitingClients.push({ request: request, response: response, counter: counter });
                 // statsWaitList.length > waitingClients.length || 
-                if (messages.length == 0)
+                if (messages.messagesArray.length == 0)
                     updateStats(false);
             }
         }
@@ -70,32 +57,25 @@ var server = http.createServer(function(request, response) {
                 var data = JSON.parse(requestBody);
                 // console.log(data);
                 // console.log(data.name);
-                var receivedMessage = data;
-                receivedMessage.id = messagesID;
-                receivedMessage.emailHash = crypto.createHash('md5').update(receivedMessage.email).digest("hex");
-                messages.push(receivedMessage);
-                messagesID++;
-                // console.log(waitingClients.length);
+                currentMessageID = messages.addMessage(data);
+
                 waitingClients.forEach(function(client) {
                     // console.log(messages.slice(client.counter, messages.length));
-                    client.response.end(JSON.stringify(messages.slice(client.counter - numberOfDeletedMessages, messages.length)));
+                    client.response.end(JSON.stringify(messages.getMessages(client.counter)));
                 });
                 updateStats(false);
                 waitingClients.length = 0;
                 // console.log('we have all the data ', data);
 
-                var userMessageID = { "id": receivedMessage.id };
-                response.end(JSON.stringify(userMessageID));
+                response.end(JSON.stringify(currentMessageID));
             });
         }
         if (request.method === 'DELETE') {
             var id = Number(url.pathname.slice(url.pathname.lastIndexOf('/') + 1));
             console.log("ID to delete is " + id);
-            messageToDelete = messages.filter(function(message) { return message.id === id; });
-            indexOfMessageToDelete = messages.indexOf(messageToDelete[0]);
 
-            messages.splice(indexOfMessageToDelete, 1);
-            numberOfDeletedMessages++;
+            messages.deleteMessage(id);
+
             updateStats(false);
 
             response.end(JSON.stringify(true));
