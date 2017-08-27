@@ -16,7 +16,7 @@ function updateStats(isDeleted) {
         var client = statsWaitList.pop();
         var stats = {
             "users": Math.max(waitingClients.length, tempLength),
-            "messages": messages.messagesArray.length
+            "messages": messages.messagesArray.length - messages.getNumberOfDeletedMessages()
         };
         client.response.end(JSON.stringify(stats));
     }
@@ -66,6 +66,8 @@ var server = http.createServer(function(request, response) {
                 updateStats(false);
                 waitingClients.length = 0;
                 // console.log('we have all the data ', data);
+
+                currentMessageID = { id: currentMessageID };
 
                 response.end(JSON.stringify(currentMessageID));
             });
@@ -125,5 +127,5 @@ var server = http.createServer(function(request, response) {
     }
 });
 
-server.listen(9097);
+server.listen(9000);
 console.log('listening...');
