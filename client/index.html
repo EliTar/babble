@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Vegans - Babble</title>
-    <link rel="stylesheet" type="text/css" href="styles/dialog-polyfill.css">
-    <script src="scripts/dialog-polyfill.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="styles/dialog-polyfill.css"> -->
+    <!-- <script src="scripts/dialog-polyfill.js"></script> -->
+    <link rel="stylesheet" href="../../node_modules/dialog-polyfill/dialog-polyfill.css">
+    <script src="../../node_modules/dialog-polyfill/dialog-polyfill.js"></script>
     <link rel="stylesheet" href="styles/main.css" type="text/css">
     <!-- TODO: Check this -->
     <link rel="shortcut icon" href="">
@@ -56,7 +58,7 @@
         <!--addMessageToChat - not logically true. Later on, will change to submit message.-->
 
         <section class="user-input-area">
-            <form action="http://localhost:9097/messages" method="POST" id="userform" style="margin: 0">
+            <form id="userform">
                 <textarea name="message" form="userform" placeholder='Enter message...'></textarea>
                 <!--<input type="image" class="submit-icon" onclick="addMessageToChat()" src="images/send.png">-->
                 <input type="image" class="submit-icon" src="images/send.png" alt="send">
