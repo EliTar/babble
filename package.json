@@ -4,11 +4,12 @@
     "description": "Web-based responsive chat with one room",
     "main": "server/server.js",
     "scripts": {
-        "test": "test"
+        "start": "node server/main.js & watch-http-server -a 127.0.0.1 -p 8080",
+        "test": "mocha test/server & watch-http-server -a 127.0.0.1 -p 8081"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/EliTar/clientSide.git"
+        "url": "git+https://github.com/EliTar/babble.git"
     },
     "keywords": [
         "chat"
@@ -16,14 +17,17 @@
     "author": "Eli Tarnarutsky",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/EliTar/clientSide/issues"
+        "url": "https://github.com/EliTar/babble/issues"
     },
-    "homepage": "https://github.com/EliTar/clientSide#readme",
+    "homepage": "https://github.com/EliTar/babble#readme",
     "dependencies": {
         "dialog-polyfill": "^0.4.8",
-        "http-server": "^0.10.0"
+        "http-server": "^0.10.0",
+        "watch-http-server": "^0.7.6"
     },
     "devDependencies": {
-        "nodemon": "^1.11.0"
+        "chai": "^4.1.1",
+        "mocha": "^3.5.0",
+        "sinon": "^3.2.1"
     }
 }
