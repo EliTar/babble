@@ -2,15 +2,20 @@ var Babble = (function() {
     var counter = 0;
     var currentUUID = 0;
     var matchIdAndTimestamp = [];
+    var url = 'http://localhost:9000';
 
     console.log('hello from client');
 
+    resetLocalStorage();
     showDialogAndListen();
     messageToLocalstorageListener();
     userLogoutListener();
     sendMessageListener();
 
     // Logic is as follows:
+
+    // resetLocalStorage():
+    // Reset the local storage values.
 
     // showDialogAndListen():
     // The communication between the server and the client is implemented as long polling.
@@ -30,9 +35,20 @@ var Babble = (function() {
     // Waiting for the user to click the send button,
     // invokes the sending of a message to the server (postMessage);
 
+    function resetLocalStorage() {
+        var userInfo = { name: '', email: '' };
+        babble = { "currentMessage": '', "userInfo": userInfo };
+        localStorage.setItem('babble', JSON.stringify(babble));
+    }
+
+
     function showDialogAndListen() {
         var dialog = document.querySelector('dialog');
         var modalForm = document.querySelector('dialog > form');
+
+        if (dialog === null || modalForm === null) {
+            return false;
+        }
 
         dialogPolyfill.registerDialog(dialog);
         dialog.showModal();
@@ -68,20 +84,20 @@ var Babble = (function() {
 
     function getStats(callback) {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://localhost:9097/stats');
+        xhr.open('GET', url + '/stats');
         xhr.addEventListener('load', function(e) {
-            callback(e);
+            callback(JSON.parse(e.target.responseText));
         });
         xhr.send();
     }
 
     function getMessages(counter, callback) {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://localhost:9097/messages?counter=' + counter);
+        xhr.open('GET', url + '/messages?counter=' + counter);
         currentUUID = generateUUID();
         xhr.setRequestHeader('X-Request-ID', currentUUID);
         xhr.addEventListener('load', function(e) {
-            callback(counter, e);
+            callback(JSON.parse(e.target.responseText), counter);
         });
         xhr.send();
     }
@@ -91,11 +107,10 @@ var Babble = (function() {
         return a ? (a ^ Math.random() * 16 >> a / 4).toString(16) : ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, generateUUID);
     }
 
-    function proccessMessages(counter, rawMessages) {
-        var messages = JSON.parse(rawMessages.target.responseText);
-
+    function proccessMessages(messages, counter) {
         messages.forEach(function(message) {
-            addMessageToChat(message);
+            if (message != "")
+                addMessageToChat(message);
         });
 
         counter += messages.length;
@@ -106,6 +121,10 @@ var Babble = (function() {
         // Update the local storage to current message
         var userText = document.querySelector('textarea');
 
+        if (userText === null) {
+            return false;
+        }
+
         userText.addEventListener("keyup", function(evt) {
             var localState = JSON.parse(localStorage.babble);
             localState.currentMessage = userText.value;
@@ -115,12 +134,17 @@ var Babble = (function() {
 
     function userLogoutListener() {
         window.addEventListener('unload', function() {
-            navigator.sendBeacon('http://localhost:9097/logout', JSON.stringify(currentUUID));
+            navigator.sendBeacon(url + '/logout', JSON.stringify(currentUUID));
         });
     }
 
     function sendMessageListener() {
         var form = document.querySelector('section > form');
+
+        if (form === null) {
+            return false;
+        }
+
         form.addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -137,22 +161,22 @@ var Babble = (function() {
     }
 
     function postMessage(message, callback) {
-        var form = document.querySelector('section > form');
+        // var form = document.querySelector('section > form');
         var xhr = new XMLHttpRequest();
-        xhr.open(form.method, form.action);
-        if (form.method === 'post') {
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        }
+        xhr.open('POST', url + '/messages');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        // if (form.method === 'post') {
+        //     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        // }
         xhr.addEventListener('load', function(e) {
-            callback(e, message.timestamp);
+            callback(JSON.parse(e.target.responseText), message.timestamp);
         });
-        console.log(form.action + " and method is " + form.method);
+        // console.log(form.action + " and method is " + form.method);
         console.log(message);
         xhr.send(JSON.stringify(message));
     }
 
-    function trackUserMessages(e, timestamp) {
-        serverResponse = JSON.parse(e.target.responseText);
+    function trackUserMessages(serverResponse, timestamp) {
         var messageIdAndTimestemp = { "id": serverResponse.id, "timestamp": timestamp };
         matchIdAndTimestamp.push(messageIdAndTimestemp);
     }
@@ -168,10 +192,10 @@ var Babble = (function() {
 
     function deleteMessage(id, callback) {
         var xhr = new XMLHttpRequest();
-        xhr.open('DELETE', 'http://localhost:9097/messages/' + id, true);
+        xhr.open('DELETE', url + '/messages/' + id, true);
         // xhr.setRequestHeader('X-Request-ID', 'value');
         xhr.addEventListener('load', function(e) {
-            callback(id, e);
+            callback(JSON.parse(e.target.responseText), id);
         });
         xhr.send();
     }
@@ -183,8 +207,7 @@ var Babble = (function() {
     // - Class names for the created messages
     // - Logic of adding a message: addMessageToChat(message) and all that follows.
 
-    function updateStats(e) {
-        var stats = JSON.parse(e.target.responseText);
+    function updateStats(stats) {
         var mesCounterObject = document.querySelector('dd:first-of-type');
         var userCounterObject = document.querySelector('dd:last-of-type');
 
@@ -194,8 +217,7 @@ var Babble = (function() {
         getStats(updateStats);
     }
 
-    function hideMessageByID(id, serverConfirmation) {
-        var confirmation = JSON.parse(serverConfirmation.target.responseText);
+    function hideMessageByID(confirmation, id) {
         if (confirmation === true) {
             matching = matchIdAndTimestamp.filter(function(message) { return message.id === id; });
             timestampToDelete = matching[0].timestamp;
