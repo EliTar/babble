@@ -5,24 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Vegans - Babble</title>
-    <!-- <link rel="stylesheet" type="text/css" href="styles/dialog-polyfill.css"> -->
-    <!-- <script src="scripts/dialog-polyfill.js"></script> -->
     <link rel="stylesheet" href="../../node_modules/dialog-polyfill/dialog-polyfill.css">
     <script src="../../node_modules/dialog-polyfill/dialog-polyfill.js"></script>
     <link rel="stylesheet" href="styles/main.css" type="text/css">
-    <!-- TODO: Check this -->
-    <link rel="shortcut icon" href="">
+    <link rel="icon" href="images/favicon.ico">
 </head>
 
 <body>
-    <header>
+    <header class="page-header">
         <img class="logo" src="images/logo.png" alt="logo">
+        <h1 class="hide-content">Babble</h1>
     </header>
-    <nav class="left-pane"></nav>
+    <nav class="left-pane">
+        <!-- If you ever want to navigate here... -->
+    </nav>
 
-    <section class="main">
+    <main class="main">
 
-        <seciton class="messages-header">
+        <header class="messages-header">
             <h2>
                 Vegans
             </h2>
@@ -38,30 +38,15 @@
                     <dd class="stats-caption">0</dd>
                 </dl>
             </aside>
-        </seciton>
+        </header>
 
         <ul class="messages">
-            <!-- <li>
-                <img class="message-image" src="images/profilePic.jpg">
-                <article class="message-box">
-                    <button class="message-close" onclick="hideMessage(this)">x</button>
-                    <cite class="message-name">Dolev Nishlis</cite><time datetime="08:00+03:00" class="message-time">15:03</time>
-                    <p class="message-text">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis, similique.
-                    </p>
-                </article>
-            </li> -->
         </ul>
-
-        <div class="messages-input-text-seperator"></div>
-
-        <!--addMessageToChat - not logically true. Later on, will change to submit message.-->
 
         <section class="user-input-area">
             <form id="userform">
                 <textarea name="message" form="userform" placeholder='Enter message...'></textarea>
-                <!--<input type="image" class="submit-icon" onclick="addMessageToChat()" src="images/send.png">-->
-                <input type="image" class="submit-icon" src="images/send.png" alt="send">
+                <button type="submit" class="submit-icon">
             </form>
         </section>
     </section>
@@ -69,7 +54,7 @@
     <dialog>
         <!-- worked by this tutorial https://webdesign.tutsplus.com/tutorials/bring-your-forms-up-to-date-with-css3-and-html5-validation-webdesign-4738 -->
         <form method="dialog" class="modal">
-            <ul>
+            <ul class="dialog-sheet">
                 <li>
                     <h2>Who are you?</h2>
                 </li>
@@ -83,13 +68,13 @@
                 </li>
                 <li class="dialog-buttons">
                     <button type="submit" value="anonymous">Stay Anonymous</button>
-                    <button type="submit" value="save">Save</button>
+                <button type="submit" value="save">Save</button>
                 </li>
-            </ul>
-        </form>
-    </dialog>
+                </ul>
+            </form>
+            </dialog>
 
-    <script src="scripts/main.js"></script>
+            <script src="scripts/main.js"></script>
 </body>
 
 </html>

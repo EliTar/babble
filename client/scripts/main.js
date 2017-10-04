@@ -11,6 +11,85 @@ var Babble = (function() {
     messageToLocalstorageListener();
     userLogoutListener();
     sendMessageListener();
+    textareaAutoGrow();
+
+    function textareaAutoGrow() {
+        var textarea = document.querySelector('textarea');
+        var mainPane = document.querySelector('main');
+        var inputArea = document.querySelector('.user-input-area');
+        var messages = document.querySelector('.messages');
+
+        if (textarea && mainPane && inputArea && messages) {
+            var originalPercent = pixelToPercentHeight(textarea.scrollHeight, mainPane);
+            textarea.addEventListener('input', function(evt) {
+                oldScroll = textarea.scrollTop;
+                inputArea.style.cssText = 'height:' + originalPercent + '%';
+                var percent = pixelToPercentHeight(textarea.scrollHeight, mainPane);
+                inputArea.style.cssText = 'height:' + percent + '%';
+                var bottom = (Number(percent));
+                var maxHeight = 100 - Number(percent) - 10;
+                messages.style.cssText = 'bottom: ' + bottom + '%; max-height: ' + maxHeight + '%';
+                if (textarea.scrollHeight > 300) {
+                    percent = pixelToPercentHeight(300, mainPane);
+                    inputArea.style.cssText = 'height:' + percent + '%';
+                    textarea.style.cssText = 'overflow-y: auto';
+                    textarea.scrollTop = oldScroll;
+                    bottom = (Number(percent));
+                    maxHeight = 100 - Number(percent) - 10;
+                    messages.style.cssText = 'bottom:' + bottom + '%; max-height: ' + maxHeight + '%';
+                } else {
+                    textarea.style.cssText = 'overflow-y: hidden';
+                }
+            }, false);
+        }
+    }
+
+    function pixelToPercentHeight(pixel, mainPane) {
+        var screenHeight = mainPane.clientHeight;
+        var Percent = Math.round((pixel / screenHeight) * 100);
+        return Percent;
+    }
+
+    function autosize(inputArea, originalPercent, mainPane, messages, textarea) {
+        // setTimeout(function() {
+        //     oldScroll = el.scrollTop;
+        //     inputArea.style.cssText = 'height:' + originalPercent + '%';
+        //     var percent = pixelToPercentHeight(el.scrollHeight, mainPane);
+        //     inputArea.style.cssText = 'height:' + percent + '%';
+        //     var bottom = (Number(percent));
+        //     var maxHeight = 100 - Number(percent) - 10;
+        //     messages.style.cssText = 'bottom: ' + bottom + '%; max-height: ' + maxHeight + '%';
+        //     if (el.scrollHeight > 300) {
+        //         percent = pixelToPercentHeight(300);
+        //         inputArea.style.cssText = 'height:' + percent + '%';
+        //         el.style.cssText = 'overflow-y: auto';
+        //         el.scrollTop = oldScroll;
+        //         bottom = (Number(percent));
+        //         maxHeight = 100 - Number(percent) - 10;
+        //         messages.style.cssText = 'bottom:' + bottom + '%; max-height: ' + maxHeight + '%';
+        //     } else {
+        //         el.style.cssText = 'overflow-y: hidden';
+        //     }
+        // }, 0);
+        oldScroll = textarea.scrollTop;
+        inputArea.style.cssText = 'height:' + originalPercent + '%';
+        var percent = pixelToPercentHeight(textarea.scrollHeight, mainPane);
+        inputArea.style.cssText = 'height:' + percent + '%';
+        var bottom = (Number(percent));
+        var maxHeight = 100 - Number(percent) - 10;
+        messages.style.cssText = 'bottom: ' + bottom + '%; max-height: ' + maxHeight + '%';
+        if (textarea.scrollHeight > 300) {
+            percent = pixelToPercentHeight(300, mainPane);
+            inputArea.style.cssText = 'height:' + percent + '%';
+            textarea.style.cssText = 'overflow-y: auto';
+            textarea.scrollTop = oldScroll;
+            bottom = (Number(percent));
+            maxHeight = 100 - Number(percent) - 10;
+            messages.style.cssText = 'bottom:' + bottom + '%; max-height: ' + maxHeight + '%';
+        } else {
+            textarea.style.cssText = 'overflow-y: hidden';
+        }
+    }
 
     // Logic is as follows:
 
@@ -86,7 +165,11 @@ var Babble = (function() {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', url + '/stats');
         xhr.addEventListener('load', function(e) {
-            callback(JSON.parse(e.target.responseText));
+            var responseText = e.target.responseText;
+            if (responseText != "")
+                callback(JSON.parse(responseText));
+            else
+                getStats(updateStats);
         });
         xhr.send();
     }
@@ -97,7 +180,11 @@ var Babble = (function() {
         currentUUID = generateUUID();
         xhr.setRequestHeader('X-Request-ID', currentUUID);
         xhr.addEventListener('load', function(e) {
-            callback(JSON.parse(e.target.responseText), counter);
+            var responseText = e.target.responseText;
+            if (responseText != "")
+                callback(JSON.parse(responseText), counter);
+            else
+                getMessages(counter, proccessMessages);
         });
         xhr.send();
     }
@@ -125,7 +212,7 @@ var Babble = (function() {
             return false;
         }
 
-        userText.addEventListener("keyup", function(evt) {
+        userText.addEventListener("input", function(evt) {
             var localState = JSON.parse(localStorage.babble);
             localState.currentMessage = userText.value;
             localStorage.setItem('babble', JSON.stringify(localState));
@@ -140,24 +227,58 @@ var Babble = (function() {
 
     function sendMessageListener() {
         var form = document.querySelector('section > form');
+        var textarea = document.querySelector('textarea');
 
-        if (form === null) {
+        if (form === null || textarea === null) {
             return false;
         }
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
+        // form.addEventListener('submit', function(e) {
+        //     e.preventDefault();
 
-            var parseLocalDate = JSON.parse(localStorage.babble);
-            var userMessage = {
-                "name": parseLocalDate.userInfo.name,
-                "email": parseLocalDate.userInfo.email,
-                "message": parseLocalDate.currentMessage,
-                "timestamp": Date.now()
-            };
+        //     var parseLocalDate = JSON.parse(localStorage.babble);
+        //     var userMessage = {
+        //         "name": parseLocalDate.userInfo.name,
+        //         "email": parseLocalDate.userInfo.email,
+        //         "message": parseLocalDate.currentMessage,
+        //         "timestamp": Date.now()
+        //     };
 
-            postMessage(userMessage, trackUserMessages);
+        //     postMessage(userMessage, trackUserMessages);
+        //     textarea.value = "";
+        // });
+
+        textarea.addEventListener('keydown', function(e) {
+            if (e.keyCode == 13 && !e.shiftKey)
+                formSubmit(e, textarea);
         });
+
+        form.addEventListener('submit', function(e) {
+            formSubmit(e, textarea);
+        });
+    }
+
+    function formSubmit(e, textarea) {
+        e.preventDefault();
+
+        var parseLocalDate = JSON.parse(localStorage.babble);
+        var userMessage = {
+            "name": parseLocalDate.userInfo.name,
+            "email": parseLocalDate.userInfo.email,
+            "message": parseLocalDate.currentMessage,
+            "timestamp": Date.now()
+        };
+
+        postMessage(userMessage, trackUserMessages);
+        textarea.value = "";
+
+        // Handle autogrow
+        var event = new Event('input', {
+            'bubbles': true,
+            'cancelable': true
+        });
+
+        textarea.dispatchEvent(event);
     }
 
     function postMessage(message, callback) {
@@ -185,9 +306,12 @@ var Babble = (function() {
         var messageToDelete = element.closest('li');
         timestampOfIdToDelete = messageToDelete.getAttribute('id');
         matching = matchIdAndTimestamp.filter(function(message) { return message.timestamp == timestampOfIdToDelete; });
-        idToDelete = matching[0].id;
-
-        deleteMessage(idToDelete, hideMessageByID);
+        if (matching.length != 0) {
+            idToDelete = matching[0].id;
+            deleteMessage(idToDelete, hideMessageByID);
+        } else {
+            alert("You can only delete your messages from the current session");
+        }
     }
 
     function deleteMessage(id, callback) {
@@ -245,7 +369,7 @@ var Babble = (function() {
 
         profileURL = 'https://www.gravatar.com/avatar/' + message.emailHash + '.jpg?d=identicon';
         profileImage = createMessageProfilePic(encodeURI(profileURL));
-        messageBox = createMessageBox(message.message, message.name, parseTime(message.timestamp), message.email);
+        messageBox = createMessageBox(message.message, message.name, message.timestamp, message.email);
 
         holeMessage.appendChild(profileImage);
         holeMessage.appendChild(messageBox);
@@ -265,13 +389,15 @@ var Babble = (function() {
         var profileImage = new Image();
         profileImage.src = imgPath;
         profileImage.className = classNames.messageImg;
+        profileImage.alt = '';
 
         return profileImage;
     }
 
     function createMessageBox(userText, userName, userMessageTime, userEmail) {
-        var messageBox = document.createElement('article');
+        var messageBox = document.createElement('section');
         messageBox.setAttribute('class', classNames.messageBox);
+        messageBox.setAttribute('tabindex', 1);
 
         if (userEmail === JSON.parse(localStorage.babble).userInfo.email) {
             var button = createExitButton();
@@ -293,6 +419,8 @@ var Babble = (function() {
         var button = document.createElement('button');
         var buttonText = document.createTextNode('x');
         button.setAttribute('class', classNames.messageX);
+        button.setAttribute('aria-label', "Delete Message");
+        button.setAttribute('tabindex', 1);
         button.setAttribute('onclick', 'Babble.invokeDeleteMessage(this)');
         button.appendChild(buttonText);
 
@@ -310,8 +438,9 @@ var Babble = (function() {
 
     function createMessageTime(currentTime) {
         var time = document.createElement('time');
-        var timeText = document.createTextNode(currentTime);
-        time.setAttribute('datetime', '08:00+03:00');
+        var timeText = document.createTextNode(parseTime(currentTime));
+        // time.setAttribute('datetime', '08:00+03:00');
+        time.setAttribute('datetime', new Date(currentTime).toISOString());
         time.setAttribute('class', classNames.messageTime);
         time.appendChild(timeText);
 

@@ -5,7 +5,7 @@ body {
 body {
   font-family: 'Nunito', sans-serif; }
 
-header {
+.page-header {
   position: absolute;
   width: 100%;
   height: 13%;
@@ -13,6 +13,14 @@ header {
   left: 0px;
   right: 0px;
   background-color: #353744; }
+
+.hide-content {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden; }
 
 .logo {
   height: 10vh;
@@ -29,16 +37,20 @@ header {
   background-color: #F6F6F6; }
 
 dialog {
-  width: 350px;
-  height: 160px;
-  padding: 15px;
+  width: 450px;
+  height: 230px;
+  padding: 0;
+  background-color: #f9f9f9;
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 3px;
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3); }
   dialog h2 {
-    font-size: 1.5rem; }
-  dialog ul {
-    padding: 0;
+    font-size: 1.5rem;
+    font-weight: normal; }
+  dialog .dialog-sheet {
+    padding-top: 0;
+    margin: 0;
+    padding-left: 25px;
     width: 100%; }
   dialog li {
     list-style-type: none;
@@ -53,7 +65,7 @@ dialog {
       right: 35px; }
 
 dialog::backdrop {
-  background-color: rgba(0, 0, 0, 0.5); }
+  background-color: rgba(0, 0, 0, 0.6); }
 
 .dialog-buttons {
   position: absolute;
@@ -124,9 +136,9 @@ dd {
   padding: 0;
   position: absolute;
   width: 95%;
-  max-height: 69%;
+  max-height: 73%;
   margin: 0% 2.5%;
-  bottom: 21%;
+  bottom: 17%;
   overflow-y: auto; }
 
 .messages-header {
@@ -158,6 +170,7 @@ dd {
   background-color: white;
   display: inline-block;
   word-wrap: break-word;
+  white-space: pre-wrap;
   margin: 0.5% 2%;
   padding: 10px 15px;
   min-width: 25%;
@@ -168,11 +181,13 @@ dd {
   border-radius: 10px;
   transition-duration: 0.2s; }
 
-.message-box:hover {
+.message-box:hover,
+.message-box:focus,
+.message-close:focus {
   background-color: #EBEDEC; }
 
 .messages-input-text-seperator {
-  height: 1%; }
+  height: 0%; }
 
 .message-text {
   margin: 0;
@@ -183,9 +198,9 @@ dd {
   background: none;
   border: none;
   outline: none;
-  display: none;
+  display: block;
   float: right;
-  font-size: 1em;
+  font-size: 0em;
   font-weight: bold;
   margin-top: -0.4em;
   margin-right: -0.6em;
@@ -198,8 +213,10 @@ dd {
   to {
     opacity: 1; } }
 
-.message-box:hover .message-close {
-  display: block; }
+.message-box:hover .message-close,
+.message-box:focus .message-close,
+.message-close:focus {
+  font-size: 1em; }
 
 .message-time {
   font-size: 0.8em;
@@ -213,29 +230,38 @@ dd {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 20%; }
+  height: 17%;
+  overflow-y: hidden; }
   .user-input-area textarea {
     position: absolute;
     box-sizing: border-box;
     border: none;
     margin: 0;
-    border-top: 0.05em solid grey;
-    border-radius: 6px;
+    border-top: 0.05em solid #B6B6B6;
+    padding: 1%;
     padding-right: 15%;
     width: 100%;
     height: 100%;
     resize: none;
     outline: none;
     font-family: sans-serif, Tahoma;
-    font-size: 1.2em; }
+    font-size: 1.2em;
+    overflow-y: hidden; }
+  .user-input-area .submit-icon:focus {
+    outline: 5px auto -webkit-focus-ring-color !important; }
   .user-input-area .submit-icon {
     position: absolute;
+    background: transparent url(../images/send.png) no-repeat;
+    background-position: center center;
+    background-size: contain;
     top: 0;
+    width: 70px;
     right: 0;
     margin-top: 2%;
     margin-right: 5%;
     outline: 0;
-    height: 45%; }
+    border: none;
+    height: 4rem; }
 
 @media screen and (max-width: 1023px), screen and (max-height: 626px) {
   .main {
@@ -243,7 +269,7 @@ dd {
     top: 15%;
     height: 85%;
     left: 0%; }
-  header {
+  .page-header {
     height: 15%; }
   .stats {
     text-align: right;
@@ -301,9 +327,9 @@ dd {
     padding: 0;
     position: absolute;
     width: 95%;
-    max-height: 72%;
+    max-height: 76%;
     margin: 0% 2.5%;
-    bottom: 21%;
+    bottom: 17%;
     overflow-y: auto; }
   .logo {
     display: block;
@@ -312,7 +338,7 @@ dd {
     padding-top: 2vh; }
   .user-input-area {
     position: absolute;
-    height: 20%; }
+    height: 17%; }
     .user-input-area textarea {
       border: none;
       margin: 0;
@@ -335,8 +361,6 @@ dd {
       margin-top: 0%;
       margin-right: 4%;
       outline: 0;
-      width: auto;
-      height: auto;
       max-width: 15%;
       max-height: 70%;
       float: right; }

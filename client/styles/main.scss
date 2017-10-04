@@ -5,7 +5,7 @@ body {
 
 $header-height-phone: 15%;
 $left-pane-width: 15%;
-$textarea-height: 20%;
+$textarea-height: 17%;
 $header-color: #353744;
 $main-chat-color: #F6F6F6;
 $left-pane-color: #61D290;
@@ -15,13 +15,13 @@ $message-box-top-bottom-margin-phone: 0.8%;
 $message-header-height: 10%;
 $message-header-height-phone: 7%;
 $messages-pane-width: 95%;
-$seperator-height: 1%;
+$seperator-height: 0%;
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 body {
     font-family: 'Nunito', sans-serif;
 }
 
-header {
+.page-header {
     position: absolute;
     width: 100%;
     height: $header-height;
@@ -29,6 +29,15 @@ header {
     left: 0px;
     right: 0px;
     background-color: $header-color;
+}
+
+.hide-content {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
 }
 
 .logo {
@@ -49,17 +58,21 @@ header {
 
 // npm install dialog-polyfill
 dialog {
-    width: 350px;
-    height: 160px;
-    padding: 15px;
+    width: 450px;
+    height: 230px;
+    padding: 0;
+    background-color: #f9f9f9;
     border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 3px;
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
     & h2 {
         font-size: 1.5rem;
+        font-weight: normal;
     }
-    & ul {
-        padding: 0;
+    & .dialog-sheet {
+        padding-top: 0;
+        margin: 0;
+        padding-left: 25px;
         width: 100%;
     }
     & li {
@@ -78,7 +91,7 @@ dialog {
 }
 
 dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 .dialog-buttons {
@@ -209,6 +222,7 @@ dd {
     background-color: white;
     display: inline-block;
     word-wrap: break-word;
+    white-space: pre-wrap;
     margin: $message-box-top-bottom-margin $message-box-left-right-margin;
     padding: 10px 15px;
     min-width: 25%;
@@ -220,7 +234,9 @@ dd {
     transition-duration: 0.2s;
 }
 
-.message-box:hover {
+.message-box:hover,
+.message-box:focus,
+.message-close:focus {
     background-color: #EBEDEC;
 }
 
@@ -241,9 +257,10 @@ dd {
     border: none;
     outline: none;
     // End normalization
-    display: none;
+    display: block;
     float: right;
-    font-size: 1em;
+    // Content Hiding
+    font-size: 0em;
     font-weight: bold;
     margin-top: -0.4em;
     margin-right: -0.6em;
@@ -260,8 +277,10 @@ dd {
     }
 }
 
-.message-box:hover .message-close {
-    display: block;
+.message-box:hover .message-close,
+.message-box:focus .message-close,
+.message-close:focus {
+    font-size: 1em;
 }
 
 .message-time {
@@ -279,13 +298,14 @@ dd {
     bottom: 0;
     width: 100%;
     height: $textarea-height;
+    overflow-y: hidden;
     & textarea {
         position: absolute;
         box-sizing: border-box;
         border: none;
         margin: 0;
-        border-top: 0.05em solid grey;
-        border-radius: 6px;
+        border-top: 0.05em solid #B6B6B6;
+        padding: 1%;
         padding-right: 15%;
         width: 100%;
         height: 100%;
@@ -293,16 +313,25 @@ dd {
         outline: none;
         font-family: sans-serif, Tahoma;
         font-size: 1.2em;
+        overflow-y: hidden;
         @extend %scroll-bar;
+    }
+    .submit-icon:focus {
+        outline: 5px auto -webkit-focus-ring-color !important;
     }
     .submit-icon {
         position: absolute;
+        background: transparent url(../images/send.png) no-repeat;
+        background-position: center center;
+        background-size: contain;
         top: 0;
+        width: 70px;
         right: 0;
         margin-top: 2%;
         margin-right: 5%;
         outline: 0;
-        height: 45%;
+        border: none;
+        height: 4rem;
     }
 }
 
@@ -314,7 +343,7 @@ screen and (max-height: 626px) {
         height: 100% - $header-height-phone;
         left: 0%;
     }
-    header {
+    .page-header {
         height: $header-height-phone;
     }
     .stats {
@@ -434,8 +463,6 @@ screen and (max-height: 626px) {
             margin-top: 0%;
             margin-right: 4%;
             outline: 0;
-            width: auto;
-            height: auto;
             max-width: 15%;
             max-height: 70%;
             float: right;
