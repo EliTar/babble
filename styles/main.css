@@ -1,0 +1,425 @@
+@import url("https://fonts.googleapis.com/css?family=Nunito");
+body {
+  font-family: 'Nunito', sans-serif;
+  margin: 0; }
+
+.page-header {
+  position: absolute;
+  width: 100%;
+  height: 13%;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  background-color: #353744; }
+
+.hide-content {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden; }
+
+.logo {
+  height: 10vh;
+  padding: 2vh; }
+
+.main {
+  position: absolute;
+  width: 85%;
+  height: 87%;
+  top: 13%;
+  left: 15%;
+  bottom: 0;
+  right: 0px;
+  background-color: #F6F6F6; }
+
+dialog {
+  width: 450px;
+  height: 220px;
+  padding: 0;
+  background-color: #f9f9f9;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3); }
+  dialog h2 {
+    font-size: 1.5rem;
+    font-weight: normal;
+    color: #181818; }
+  dialog .dialog-sheet {
+    color: #181818;
+    padding-top: 0;
+    margin: 0;
+    padding-left: 25px;
+    width: 100%;
+    box-sizing: border-box; }
+  dialog li {
+    list-style-type: none;
+    list-style-position: outside;
+    padding: 0px;
+    margin-bottom: 15px; }
+    dialog li input {
+      font: inherit;
+      font-weight: bold;
+      position: absolute;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      outline: none;
+      width: 290px;
+      padding: 2px 8px;
+      right: 30px; }
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.6); }
+
+.dialog-buttons {
+  position: absolute;
+  bottom: 25px;
+  right: 30px; }
+  .dialog-buttons button {
+    border: none;
+    margin: 0px 3px; }
+  .dialog-buttons button:first-of-type {
+    background: linear-gradient(#d0d0d0, #bdbdbd);
+    padding: 5px 15px;
+    color: black; }
+  .dialog-buttons button:last-of-type {
+    background: linear-gradient(#7ad54f, #4aa470);
+    padding: 5px 25px;
+    color: white; }
+
+form {
+  margin: 0; }
+
+.left-pane {
+  position: absolute;
+  width: 15%;
+  height: 87%;
+  top: 13%;
+  left: 0px;
+  right: 85%;
+  background-color: #61D290; }
+
+.messages::-webkit-scrollbar-track, .user-input-area textarea::-webkit-scrollbar-track {
+  border: 1px solid #ECECEC;
+  border-radius: 10px;
+  background-color: white; }
+
+.messages::-webkit-scrollbar, .user-input-area textarea::-webkit-scrollbar {
+  width: 1%;
+  background-color: #F5F5F5; }
+
+.messages::-webkit-scrollbar-thumb, .user-input-area textarea::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  border: 1px solid #ECECEC;
+  background-color: #EBEDEC; }
+
+.stats {
+  width: 30%;
+  margin-right: 4%;
+  -webkit-margin-after: 0;
+  -webkit-margin-before: 0;
+  text-align: right; }
+
+dt,
+dd {
+  display: inline; }
+
+dl {
+  -webkit-margin-after: 0;
+  -webkit-margin-before: 0; }
+
+.stats-caption {
+  display: inline;
+  margin-left: 0.1rem;
+  font-weight: bold;
+  font-size: 1.1em; }
+
+.stats-icons {
+  display: inline; }
+  .stats-icons img {
+    height: 1.1rem; }
+
+.messages {
+  list-style-type: none;
+  padding: 0;
+  position: absolute;
+  width: 97%;
+  max-height: 73%;
+  margin: 0% 1.5%;
+  bottom: 17%;
+  overflow-y: auto; }
+
+.messages-header {
+  position: absolute;
+  height: 10%;
+  width: 100%; }
+  .messages-header h2 {
+    margin: 0;
+    display: inline-block;
+    font-weight: normal;
+    line-height: 1em;
+    font-size: 2.1em;
+    color: #181818;
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    padding: 1vh 1.2vh; }
+  .messages-header aside {
+    position: absolute;
+    display: inline;
+    margin: 1em 3em;
+    right: 0; }
+
+.message-image {
+  position: relative;
+  float: left;
+  top: 0.6em;
+  left: 0px;
+  width: 2.5em;
+  border-radius: 50%; }
+
+.message-box {
+  background-color: white;
+  outline: none;
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  margin: 0.5% 1.5%;
+  padding: 10px 15px;
+  min-width: 25%;
+  max-width: 60%;
+  border-style: solid;
+  border-width: 0.15em;
+  border-color: #ECECEC;
+  border-radius: 10px;
+  transition-duration: 0.2s; }
+
+.message-box:hover,
+.message-box:focus,
+.message-close:focus {
+  background-color: #EBEDEC; }
+
+.messages-input-text-seperator {
+  height: 0%; }
+
+.message-text {
+  margin: 0;
+  margin-top: 5px;
+  font-size: 1.1em;
+  color: #181818; }
+
+.message-close {
+  background: none;
+  border: none;
+  outline: none;
+  display: block;
+  float: right;
+  font-size: 0em;
+  font-weight: bold;
+  margin-top: -0.4em;
+  margin-right: -0.6em;
+  color: #383A47;
+  animation: fade-in 0.7s; }
+
+@keyframes fade-in {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+.message-box:hover .message-close,
+.message-box:focus .message-close,
+.message-close:focus {
+  font-size: 1em; }
+
+.message-time {
+  color: #616161;
+  font-size: 0.8em;
+  margin-left: 5px; }
+
+.message-name {
+  font-weight: bold;
+  font-size: 1em; }
+
+.user-input-area {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 17%;
+  overflow-y: hidden; }
+  .user-input-area textarea {
+    position: absolute;
+    box-sizing: border-box;
+    border: none;
+    margin: 0;
+    border-top: 0.05em solid #B6B6B6;
+    padding: 1%;
+    padding-right: 15%;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    outline: none;
+    font-family: sans-serif, Tahoma;
+    font-size: 1.2em;
+    color: #181818;
+    overflow-y: hidden; }
+  .user-input-area .submit-icon:focus {
+    outline: 5px auto -webkit-focus-ring-color !important; }
+  .user-input-area .submit-icon {
+    position: absolute;
+    background: transparent url(../images/send.png) no-repeat;
+    background-position: center center;
+    background-size: contain;
+    top: 0;
+    width: 70px;
+    right: 0;
+    margin-top: 2%;
+    margin-right: 5%;
+    outline: 0;
+    border: none;
+    height: 4rem; }
+
+@media only screen and (max-width: 628px) {
+  .main {
+    width: 100%;
+    top: 15%;
+    height: 85%;
+    left: 0%; }
+  dialog {
+    width: 85%;
+    height: 90%;
+    top: 5%;
+    box-sizing: border-box; }
+    dialog h2 {
+      font-size: 1.5rem;
+      font-weight: normal; }
+    dialog .dialog-sheet {
+      padding-top: 10%;
+      padding-left: 10%; }
+    dialog li {
+      list-style-type: none;
+      list-style-position: outside;
+      padding: 0px;
+      margin-bottom: 50px;
+      margin-top: 0%; }
+      dialog li input {
+        display: block;
+        margin-top: 5px;
+        width: 70%;
+        left: 12%; }
+  .page-header {
+    height: 15%; }
+  .stats {
+    text-align: right;
+    margin: 0;
+    padding: 0; }
+  .stats-caption {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    font-size: 1em; }
+  .stats-icons {
+    display: inline;
+    margin-left: 0.5vh; }
+  .messages-header {
+    position: absolute;
+    height: 7%;
+    width: 100%; }
+    .messages-header h2 {
+      font-size: 3.5vh; }
+    .messages-header aside {
+      position: absolute;
+      display: inline;
+      top: 0;
+      right: 0;
+      margin: 0.3em 2em; }
+  .messages::-webkit-scrollbar-track, .user-input-area textarea::-webkit-scrollbar-track {
+    border: none; }
+  .message-box {
+    margin: 0.8% 1.5%;
+    padding: 4px 8px;
+    min-width: 40%;
+    max-width: 75%;
+    border-radius: 10px;
+    border-width: 2px; }
+  .message-image {
+    position: relative;
+    width: 8%;
+    max-width: 4em;
+    border-radius: 50%; }
+  .message-text {
+    margin: 0;
+    margin-top: 5px;
+    font-size: 0.95em; }
+  .message-time {
+    font-size: 0.7em; }
+  .message-name {
+    font-size: 0.9em; }
+  .messages {
+    list-style-type: none;
+    padding: 0;
+    position: absolute;
+    width: 97%;
+    max-height: 76%;
+    margin: 0% 1.5%;
+    bottom: 17%;
+    overflow-y: auto; }
+  .logo {
+    display: block;
+    margin: auto;
+    height: 11.5vh;
+    padding-top: 2vh; }
+  .user-input-area {
+    position: absolute;
+    height: 17%; }
+    .user-input-area textarea {
+      border: none;
+      margin: 0;
+      border: 0.15em solid #ECECEC;
+      border-radius: 6px;
+      padding: 5px;
+      padding-right: 15%;
+      margin-left: 5%;
+      overflow-y: scroll;
+      width: 75%;
+      height: 80%;
+      resize: none;
+      outline: none;
+      font-family: sans-serif, Tahoma;
+      font-size: 1.2em;
+      border-width: 2px; }
+      .user-input-area textarea::-webkit-scrollbar {
+        display: none; }
+    .user-input-area .submit-icon {
+      top: 0;
+      right: 0;
+      margin-top: 0%;
+      margin-right: 4%;
+      outline: 0;
+      max-width: 15%;
+      max-height: 70%;
+      float: right; }
+  .left-pane {
+    width: 0%; } }
+
+@media only screen and (max-width: 319px) {
+  .dialog-buttons {
+    bottom: 25px;
+    left: 30px; }
+    .dialog-buttons button:first-of-type {
+      display: block;
+      margin-bottom: 5px;
+      padding: 3px 5px; }
+    .dialog-buttons button:last-of-type {
+      padding: 3px 5px; }
+  .stats-caption {
+    font-size: 70%; }
+  .messages-header h2 {
+    font-size: 100%; }
+  .messages-header aside {
+    margin: 0; }
+  .stats-icons {
+    margin-left: 0; }
+    .stats-icons img {
+      height: 12px; } }

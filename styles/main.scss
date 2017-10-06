@@ -1,0 +1,551 @@
+$header-height: 13%;
+$header-height-phone: 15%;
+$left-pane-width: 15%;
+$textarea-height: 17%;
+$header-color: #353744;
+$main-chat-color: #F6F6F6;
+$left-pane-color: #61D290;
+$message-time-color: #616161;
+$message-textarea-content-color:#181818;
+$headings-color: #181818;
+$message-box-left-right-margin: 1.5%;
+$message-box-top-bottom-margin: 0.5%;
+$message-box-top-bottom-margin-phone: 0.8%;
+$message-header-height: 10%;
+$message-header-height-phone: 7%;
+$messages-pane-width: 97%;
+$seperator-height: 0%;
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+body {
+    font-family: 'Nunito', sans-serif;
+    margin: 0;
+}
+
+.page-header {
+    position: absolute;
+    width: 100%;
+    height: $header-height;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: $header-color;
+}
+
+.hide-content {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.logo {
+    height: 10vh;
+    padding: 2vh;
+}
+
+.main {
+    position: absolute;
+    width: 100% - $left-pane-width;
+    height: 100% - $header-height;
+    top: $header-height;
+    left: $left-pane-width;
+    bottom: 0;
+    right: 0px;
+    background-color: $main-chat-color;
+}
+
+// npm install dialog-polyfill
+dialog {
+    width: 450px;
+    height: 220px;
+    padding: 0;
+    background-color: #f9f9f9;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    & h2 {
+        font-size: 1.5rem;
+        font-weight: normal;
+        color: $headings-color;
+    }
+    & .dialog-sheet {
+        color: $message-textarea-content-color;
+        padding-top: 0;
+        margin: 0;
+        padding-left: 25px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    & li {
+        list-style-type: none;
+        list-style-position: outside;
+        padding: 0px;
+        margin-bottom: 15px;
+        & input {
+            font: inherit;
+            font-weight: bold;
+            position: absolute;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            outline: none;
+            width: 290px;
+            padding: 2px 8px;
+            right: 30px;
+        }
+    }
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.dialog-buttons {
+    position: absolute;
+    bottom: 25px;
+    right: 30px;
+    button {
+        border: none;
+        margin: 0px 3px;
+    }
+    button:first-of-type {
+        background: linear-gradient(#d0d0d0, #bdbdbd);
+        padding: 5px 15px;
+        color: black;
+    }
+    button:last-of-type {
+        background: linear-gradient(#7ad54f, #4aa470);
+        padding: 5px 25px;
+        color: white;
+    }
+}
+
+form {
+    margin: 0;
+}
+
+.left-pane {
+    position: absolute;
+    width: $left-pane-width;
+    height: 100% - $header-height;
+    top: $header-height;
+    left: 0px;
+    right: 100 - $left-pane-width;
+    background-color: $left-pane-color;
+}
+
+%scroll-bar {
+    &::-webkit-scrollbar-track {
+        border: 1px solid #ECECEC;
+        border-radius: 10px;
+        background-color: white;
+    }
+    &::-webkit-scrollbar {
+        width: 1%;
+        background-color: #F5F5F5;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        border: 1px solid #ECECEC;
+        background-color: #EBEDEC;
+    }
+}
+
+.stats {
+    width: 30%;
+    margin-right: 4%;
+    -webkit-margin-after: 0;
+    -webkit-margin-before: 0;
+    text-align: right;
+}
+
+dt,
+dd {
+    display: inline;
+}
+
+dl {
+    -webkit-margin-after: 0;
+    -webkit-margin-before: 0;
+}
+
+.stats-caption {
+    display: inline;
+    margin-left: 0.1rem;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.stats-icons {
+    display: inline;
+    & img {
+        height: 1.1rem;
+    }
+}
+
+.messages {
+    // reset defualt properties
+    list-style-type: none;
+    padding: 0;
+    // The real work starts here
+    position: absolute;
+    width: $messages-pane-width;
+    max-height: 100% - $textarea-height - $message-header-height - $seperator-height;
+    margin: 0% (100% - $messages-pane-width) / 2;
+    bottom: $textarea-height + $seperator-height;
+    overflow-y: auto;
+    @extend %scroll-bar;
+}
+
+.messages-header {
+    position: absolute;
+    height: $message-header-height;
+    width: 100%;
+    & h2 {
+        margin: 0; // did problematic things with all the aligment 
+        display: inline-block;
+        font-weight: normal;
+        line-height: 1em;
+        font-size: 2.1em;
+        color: $headings-color;
+        -webkit-margin-before: 0;
+        -webkit-margin-after: 0;
+        padding: 1vh 1.2vh;
+        // padding: 3vh;
+        // font-size: 2vw;
+        // padding-left: 1vw;
+    }
+    & aside {
+        position: absolute;
+        display: inline;
+        margin: 1em 3em;
+        right: 0;
+    }
+}
+
+.message-image {
+    position: relative;
+    float: left;
+    top: 0.6em;
+    left: 0px;
+    width: 2.5em;
+    border-radius: 50%;
+}
+
+.message-box {
+    background-color: white;
+    outline: none;
+    display: inline-block;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    margin: $message-box-top-bottom-margin $message-box-left-right-margin;
+    padding: 10px 15px;
+    min-width: 25%;
+    max-width: 60%;
+    border-style: solid;
+    border-width: 0.15em;
+    border-color: #ECECEC;
+    border-radius: 10px;
+    transition-duration: 0.2s;
+}
+
+.message-box:hover,
+.message-box:focus,
+.message-close:focus {
+    background-color: #EBEDEC;
+}
+
+.messages-input-text-seperator {
+    height: $seperator-height;
+}
+
+.message-text {
+    // Already set, its a paragraph. display: block;
+    margin: 0;
+    margin-top: 5px;
+    font-size: 1.1em;
+    color: $message-textarea-content-color;
+}
+
+.message-close {
+    // Normlize the default button design
+    background: none;
+    border: none;
+    outline: none;
+    // End normalization
+    display: block;
+    float: right;
+    // Content Hiding
+    font-size: 0em;
+    font-weight: bold;
+    margin-top: -0.4em;
+    margin-right: -0.6em;
+    color: #383A47;
+    animation: fade-in 0.7s;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0
+    }
+    to {
+        opacity: 1
+    }
+}
+
+.message-box:hover .message-close,
+.message-box:focus .message-close,
+.message-close:focus {
+    font-size: 1em;
+}
+
+.message-time {
+    color: $message-time-color;
+    font-size: 0.8em;
+    margin-left: 5px;
+}
+
+.message-name {
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.user-input-area {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: $textarea-height;
+    overflow-y: hidden;
+    & textarea {
+        position: absolute;
+        box-sizing: border-box;
+        border: none;
+        margin: 0;
+        border-top: 0.05em solid #B6B6B6;
+        padding: 1%;
+        padding-right: 15%;
+        width: 100%;
+        height: 100%;
+        resize: none;
+        outline: none;
+        font-family: sans-serif, Tahoma;
+        font-size: 1.2em;
+        color: $message-textarea-content-color;
+        overflow-y: hidden;
+        @extend %scroll-bar;
+    }
+    .submit-icon:focus {
+        outline: 5px auto -webkit-focus-ring-color !important;
+    }
+    .submit-icon {
+        position: absolute;
+        background: transparent url(../images/send.png) no-repeat;
+        background-position: center center;
+        background-size: contain;
+        top: 0;
+        width: 70px;
+        right: 0;
+        margin-top: 2%;
+        margin-right: 5%;
+        outline: 0;
+        border: none;
+        height: 4rem;
+    }
+}
+
+@media only screen and (max-width: 628px) {
+    .main {
+        width: 100%;
+        top: $header-height-phone;
+        height: 100% - $header-height-phone;
+        left: 0%;
+    }
+    dialog {
+        width: 85%;
+        height: 90%;
+        top: 5%;
+        box-sizing: border-box;
+        & h2 {
+            font-size: 1.5rem;
+            font-weight: normal;
+        }
+        & .dialog-sheet {
+            padding-top: 10%;
+            padding-left: 10%;
+        }
+        & li {
+            list-style-type: none;
+            list-style-position: outside;
+            padding: 0px;
+            margin-bottom: 50px;
+            margin-top: 0%;
+            & input {
+                display: block;
+                margin-top: 5px;
+                width: 70%;
+                left: 12%;
+            }
+        }
+    }
+    .page-header {
+        height: $header-height-phone;
+    }
+    .stats {
+        // margin-top: 1.5vh;
+        // margin-right: 8vh;
+        text-align: right;
+        margin: 0;
+        padding: 0;
+        // width: 50%;
+    }
+    .stats-caption {
+        display: inline;
+        margin: 0;
+        padding: 0;
+        font-weight: bold;
+        font-size: 1em;
+    }
+    .stats-icons {
+        display: inline;
+        margin-left: 0.5vh;
+        // & img {
+        //     width: 10%;
+        //     height: 2vh;
+        // }
+    }
+    .messages-header {
+        position: absolute;
+        height: $message-header-height-phone;
+        width: 100%;
+        & h2 {
+            font-size: 3.5vh;
+        }
+        & aside {
+            position: absolute;
+            display: inline;
+            top: 0;
+            right: 0;
+            margin: 0.3em 2em;
+        }
+    }
+    %scroll-bar {
+        &::-webkit-scrollbar-track {
+            border: none;
+        }
+    }
+    .message-box {
+        margin: $message-box-top-bottom-margin-phone $message-box-left-right-margin;
+        padding: 4px 8px;
+        min-width: 40%;
+        max-width: 75%;
+        border-radius: 10px;
+        border-width: 2px;
+    }
+    .message-image {
+        position: relative;
+        width: 8%;
+        max-width: 4em;
+        border-radius: 50%;
+    }
+    .message-text {
+        // Already set, its a paragraph. display: block;
+        margin: 0;
+        margin-top: 5px;
+        font-size: 0.95em;
+    }
+    .message-time {
+        font-size: 0.7em;
+    }
+    .message-name {
+        font-size: 0.9em;
+    }
+    .messages {
+        // reset defualt properties
+        list-style-type: none;
+        padding: 0;
+        // The real work starts here
+        position: absolute;
+        width: $messages-pane-width;
+        max-height: 100% - $textarea-height - $message-header-height-phone - $seperator-height;
+        margin: 0% (100% - $messages-pane-width) / 2;
+        bottom: $textarea-height + $seperator-height;
+        overflow-y: auto;
+    }
+    .logo {
+        display: block;
+        margin: auto;
+        height: 11.5vh;
+        padding-top: 2vh;
+    }
+    .user-input-area {
+        position: absolute;
+        height: $textarea-height;
+        & textarea {
+            border: none;
+            margin: 0;
+            border: 0.15em solid #ECECEC;
+            border-radius: 6px;
+            padding: 5px;
+            padding-right: 15%;
+            margin-left: 5%;
+            overflow-y: scroll;
+            width: 75%;
+            height: 80%;
+            resize: none;
+            outline: none;
+            font-family: sans-serif, Tahoma;
+            font-size: 1.2em;
+            border-width: 2px;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+        .submit-icon {
+            // position: absolute;
+            top: 0;
+            right: 0;
+            margin-top: 0%;
+            margin-right: 4%;
+            outline: 0;
+            max-width: 15%;
+            max-height: 70%;
+            float: right;
+        }
+    }
+    .left-pane {
+        width: 0%;
+    }
+}
+
+@media only screen and (max-width: 319px) {
+    .dialog-buttons {
+        bottom: 25px;
+        left: 30px;
+        button:first-of-type {
+            display: block;
+            margin-bottom: 5px;
+            padding: 3px 5px;
+        }
+        button:last-of-type {
+            padding: 3px 5px;
+        }
+    }
+    .stats-caption {
+        font-size: 70%;
+    }
+    .messages-header {
+        h2 {
+            font-size: 100%;
+        }
+        aside {
+            margin: 0;
+        }
+    }
+    .stats-icons {
+        margin-left: 0;
+        img {
+            height: 12px;
+        }
+    }
+}
