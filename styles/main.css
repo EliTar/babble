@@ -48,7 +48,7 @@ to{opacity:1;}
 .user-input-area{position:absolute;bottom:0;width:100%;height:17%;overflow-y:hidden;}
 .user-input-area textarea{position:absolute;box-sizing:border-box;border:none;margin:0;border-top:0.05em solid #B6B6B6;padding:1%;padding-right:15%;width:100%;height:100%;resize:none;outline:none;font-family:sans-serif, Tahoma;font-size:1.2em;color:#181818;overflow-y:hidden;}
 .user-input-area .submit-icon:focus{outline:5px auto -webkit-focus-ring-color !important;}
-.user-input-area .submit-icon{position:absolute;background:transparent url(../images/send.png) no-repeat;background-position:center center;background-size:contain;top:0;width:70px;right:0;margin-top:2%;margin-right:5%;outline:0;border:none;height:4rem;}
+.user-input-area .submit-icon{position:absolute;background:transparent url(../images/send_mini.png) no-repeat;background-position:center center;background-size:contain;top:0;width:70px;right:0;margin-top:2%;margin-right:5%;outline:0;border:none;height:4rem;}
 @media only screen and (max-width:628px){.main{width:100%;top:15%;height:85%;left:0%;}
 dialog{width:85%;height:90%;top:5%;box-sizing:border-box;}
 dialog h2{font-size:1.5rem;font-weight:normal;}
