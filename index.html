@@ -6,8 +6,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Vegans - Babble</title>
+
+    <!-- <link rel="stylesheet" href="../../node_modules/dialog-polyfill/dialog-polyfill.css">
+    <script src="../../node_modules/dialog-polyfill/dialog-polyfill.js"></script> -->
+
     <link rel="stylesheet" href="../../node_modules/dialog-polyfill/dialog-polyfill.css">
     <script src="../../node_modules/dialog-polyfill/dialog-polyfill.js"></script>
+
     <link rel="stylesheet" href="styles/main.css" type="text/css">
     <link rel="icon" href="images/favicon.ico">
 </head>
@@ -49,9 +54,7 @@
                 <label for="textarea" class="hide-content">User Input</label>
                 <textarea id="textarea" name="message" form="userform" placeholder='Enter message...'>
                 </textarea>
-                <button type="submit" class="submit-icon">
-                    <title class="hide-content">Send</title>
-                </button>
+                <button type="submit" class="submit-icon" aria-label="Send Message"> </button>
             </form>
         </section>
     </main>
