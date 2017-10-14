@@ -16,8 +16,8 @@ window.Babble = (function() {
     function textareaAutoGrow() {
         var textarea = document.querySelector('textarea');
         var mainPane = document.querySelector('main');
-        var inputArea = document.querySelector('.user-input-area');
-        var messages = document.querySelector('.messages');
+        var inputArea = document.querySelector('.UserInputArea');
+        var messages = document.querySelector('.Messages');
 
         if (textarea && mainPane && inputArea && messages) {
             var originalPercent = pixelToPercentHeight(textarea.scrollHeight, mainPane);
@@ -334,14 +334,14 @@ window.Babble = (function() {
     }
 
     const classNames = {
-        messages: 'messages',
-        messageImg: 'message-image',
-        messageText: 'message-text',
-        messageBox: 'message-box',
-        messageX: 'message-close',
-        messageName: 'message-name',
-        messageTime: 'message-time',
-        inputArea: 'user-input-area'
+        messages: 'Messages',
+        messageImg: 'Message-image',
+        messageText: 'Message-text',
+        messageBox: 'Message-box',
+        messageX: 'Message-close',
+        messageName: 'Message-name',
+        messageTime: 'Message-time',
+        inputArea: 'UserInputArea'
     };
 
     function addMessageToChat(message) {
