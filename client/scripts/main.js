@@ -1,4 +1,4 @@
-var Babble = (function() {
+window.Babble = (function() {
     var counter = 0;
     var currentUUID = 0;
     var matchIdAndTimestamp = [];
@@ -16,8 +16,8 @@ var Babble = (function() {
     function textareaAutoGrow() {
         var textarea = document.querySelector('textarea');
         var mainPane = document.querySelector('main');
-        var inputArea = document.querySelector('.user-input-area');
-        var messages = document.querySelector('.messages');
+        var inputArea = document.querySelector('.UserInputArea');
+        var messages = document.querySelector('.Messages');
 
         if (textarea && mainPane && inputArea && messages) {
             var originalPercent = pixelToPercentHeight(textarea.scrollHeight, mainPane);
@@ -50,47 +50,6 @@ var Babble = (function() {
         return Percent;
     }
 
-    function autosize(inputArea, originalPercent, mainPane, messages, textarea) {
-        // setTimeout(function() {
-        //     oldScroll = el.scrollTop;
-        //     inputArea.style.cssText = 'height:' + originalPercent + '%';
-        //     var percent = pixelToPercentHeight(el.scrollHeight, mainPane);
-        //     inputArea.style.cssText = 'height:' + percent + '%';
-        //     var bottom = (Number(percent));
-        //     var maxHeight = 100 - Number(percent) - 10;
-        //     messages.style.cssText = 'bottom: ' + bottom + '%; max-height: ' + maxHeight + '%';
-        //     if (el.scrollHeight > 300) {
-        //         percent = pixelToPercentHeight(300);
-        //         inputArea.style.cssText = 'height:' + percent + '%';
-        //         el.style.cssText = 'overflow-y: auto';
-        //         el.scrollTop = oldScroll;
-        //         bottom = (Number(percent));
-        //         maxHeight = 100 - Number(percent) - 10;
-        //         messages.style.cssText = 'bottom:' + bottom + '%; max-height: ' + maxHeight + '%';
-        //     } else {
-        //         el.style.cssText = 'overflow-y: hidden';
-        //     }
-        // }, 0);
-        oldScroll = textarea.scrollTop;
-        inputArea.style.cssText = 'height:' + originalPercent + '%';
-        var percent = pixelToPercentHeight(textarea.scrollHeight, mainPane);
-        inputArea.style.cssText = 'height:' + percent + '%';
-        var bottom = (Number(percent));
-        var maxHeight = 100 - Number(percent) - 10;
-        messages.style.cssText = 'bottom: ' + bottom + '%; max-height: ' + maxHeight + '%';
-        if (textarea.scrollHeight > 300) {
-            percent = pixelToPercentHeight(300, mainPane);
-            inputArea.style.cssText = 'height:' + percent + '%';
-            textarea.style.cssText = 'overflow-y: auto';
-            textarea.scrollTop = oldScroll;
-            bottom = (Number(percent));
-            maxHeight = 100 - Number(percent) - 10;
-            messages.style.cssText = 'bottom:' + bottom + '%; max-height: ' + maxHeight + '%';
-        } else {
-            textarea.style.cssText = 'overflow-y: hidden';
-        }
-    }
-
     // Logic is as follows:
 
     // resetLocalStorage():
@@ -115,8 +74,22 @@ var Babble = (function() {
     // invokes the sending of a message to the server (postMessage);
 
     function resetLocalStorage() {
+        var lastSession = localStorage.getItem('babble');
+        var textarea = document.querySelector('textarea');
+
         var userInfo = { name: '', email: '' };
-        babble = { "currentMessage": '', "userInfo": userInfo };
+        var currentMessage = '';
+
+        if (lastSession) {
+            lastSession = JSON.parse(lastSession);
+            userInfo.name = lastSession.userInfo.name;
+            userInfo.email = lastSession.userInfo.email;
+            currentMessage = lastSession.currentMessage;
+            if (textarea)
+                textarea.value = currentMessage;
+        }
+
+        babble = { "currentMessage": currentMessage, "userInfo": userInfo };
         localStorage.setItem('babble', JSON.stringify(babble));
     }
 
@@ -135,13 +108,23 @@ var Babble = (function() {
             if (dialog.returnValue == 'save') {
                 var userInformation = new userInfo(modalForm.name.value, modalForm.email.value);
                 register(userInformation);
+            } else if (dialog.returnValue == 'exists') {
+                var localUserInfo = JSON.parse(localStorage.getItem('babble')).userInfo;
+                var userInformation = new userInfo(localUserInfo.name, localUserInfo.email);
+                register(userInformation);
             } else {
-                var userInformation = new userInfo('anonymous', 'anonymous');
+                var userInformation = new userInfo('Anonymous', 'Anonymous');
                 register(userInformation);
             }
             getStats(updateStats);
             getMessages(counter, proccessMessages);
         });
+
+        var localInfo = JSON.parse(localStorage.getItem('babble'));
+        if (localInfo.userInfo.email != '' && localInfo.userInfo.email != 'Anonymous') {
+            dialog.returnValue = 'exists';
+            dialog.close();
+        }
     }
 
     function userInfo(name, email) {
@@ -351,14 +334,14 @@ var Babble = (function() {
     }
 
     const classNames = {
-        messages: 'messages',
-        messageImg: 'message-image',
-        messageText: 'message-text',
-        messageBox: 'message-box',
-        messageX: 'message-close',
-        messageName: 'message-name',
-        messageTime: 'message-time',
-        inputArea: 'user-input-area'
+        messages: 'Messages',
+        messageImg: 'Message-image',
+        messageText: 'Message-text',
+        messageBox: 'Message-box',
+        messageX: 'Message-close',
+        messageName: 'Message-name',
+        messageTime: 'Message-time',
+        inputArea: 'UserInputArea'
     };
 
     function addMessageToChat(message) {
@@ -368,6 +351,10 @@ var Babble = (function() {
         holeMessage.setAttribute('id', message.timestamp);
 
         profileURL = 'https://www.gravatar.com/avatar/' + message.emailHash + '.jpg?d=identicon';
+
+        if (message.name == "Anonymous")
+            profileURL = 'images/anon.png';
+
         profileImage = createMessageProfilePic(encodeURI(profileURL));
         messageBox = createMessageBox(message.message, message.name, message.timestamp, message.email);
 
