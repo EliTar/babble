@@ -377,13 +377,18 @@ dl {
         padding-right: 15%;
         width: 100%;
         height: 100%;
+        font-family: 'Nunito', sans-serif !important;
+        font-size: 1.1em;
         resize: none;
         outline: none;
         font-family: sans-serif, Tahoma;
-        font-size: 1.2em;
+        font-size: 1.1em;
         color: $message-textarea-content-color;
         overflow-y: hidden;
         @extend %scroll-bar;
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
     .UserInputArea-submitIcon:focus {
         outline: 5px auto -webkit-focus-ring-color !important;
@@ -517,10 +522,9 @@ dl {
         // The real work starts here
         position: absolute;
         width: $messages-pane-width;
-        max-height: 100% - $textarea-height - $message-header-height-phone - $seperator-height;
+        max-height: 73%;
         margin: 0% (100% - $messages-pane-width) / 2;
         bottom: $textarea-height + $seperator-height;
-        overflow-y: auto;
     }
     .PageHeader-logo {
         display: block;
@@ -544,8 +548,7 @@ dl {
             height: 80%;
             resize: none;
             outline: none;
-            font-family: sans-serif, Tahoma;
-            font-size: 1.2em;
+            font-size: 0.95em;
             border-width: 2px;
             &::-webkit-scrollbar {
                 display: none;

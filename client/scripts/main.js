@@ -6,12 +6,31 @@ window.Babble = (function() {
 
     console.log('hello from client');
 
-    resetLocalStorage();
+    maintainLocalStorage();
     showDialogAndListen();
     messageToLocalstorageListener();
     userLogoutListener();
     sendMessageListener();
     textareaAutoGrow();
+    resizeListener();
+
+    function resizeListener() {
+        var textarea = document.querySelector('textarea');
+
+        if (textarea === null) {
+            return false;
+        }
+
+        window.addEventListener("resize", function(evt) {
+            // Handle autogrow
+            var event = new Event('input', {
+                'bubbles': true,
+                'cancelable': true
+            });
+
+            textarea.dispatchEvent(event);
+        }, false);
+    }
 
     function textareaAutoGrow() {
         var textarea = document.querySelector('textarea');
@@ -25,6 +44,8 @@ window.Babble = (function() {
                 oldScroll = textarea.scrollTop;
                 inputArea.style.cssText = 'height:' + originalPercent + '%';
                 var percent = pixelToPercentHeight(textarea.scrollHeight, mainPane);
+                if (percent < 17)
+                    percent = 17;
                 inputArea.style.cssText = 'height:' + percent + '%';
                 var bottom = (Number(percent));
                 var maxHeight = 100 - Number(percent) - 10;
@@ -37,8 +58,6 @@ window.Babble = (function() {
                     bottom = (Number(percent));
                     maxHeight = 100 - Number(percent) - 10;
                     messages.style.cssText = 'bottom:' + bottom + '%; max-height: ' + maxHeight + '%';
-                } else {
-                    textarea.style.cssText = 'overflow-y: hidden';
                 }
             }, false);
         }
@@ -52,7 +71,7 @@ window.Babble = (function() {
 
     // Logic is as follows:
 
-    // resetLocalStorage():
+    // maintainLocalStorage():
     // Reset the local storage values.
 
     // showDialogAndListen():
@@ -73,7 +92,7 @@ window.Babble = (function() {
     // Waiting for the user to click the send button,
     // invokes the sending of a message to the server (postMessage);
 
-    function resetLocalStorage() {
+    function maintainLocalStorage() {
         var lastSession = localStorage.getItem('babble');
         var textarea = document.querySelector('textarea');
 
@@ -244,6 +263,11 @@ window.Babble = (function() {
     function formSubmit(e, textarea) {
         e.preventDefault();
 
+        if (textarea.value == "") {
+            alert("You can't send an empty message");
+            return;
+        }
+
         var parseLocalDate = JSON.parse(localStorage.babble);
         var userMessage = {
             "name": parseLocalDate.userInfo.name,
@@ -291,7 +315,7 @@ window.Babble = (function() {
         matching = matchIdAndTimestamp.filter(function(message) { return message.timestamp == timestampOfIdToDelete; });
         if (matching.length != 0) {
             idToDelete = matching[0].id;
-            deleteMessage(idToDelete, hideMessageByID);
+            deleteMessage(idToDelete, deleteMessageByID);
         } else {
             alert("You can only delete your messages from the current session");
         }
@@ -324,12 +348,12 @@ window.Babble = (function() {
         getStats(updateStats);
     }
 
-    function hideMessageByID(confirmation, id) {
+    function deleteMessageByID(confirmation, id) {
         if (confirmation === true) {
             matching = matchIdAndTimestamp.filter(function(message) { return message.id === id; });
             timestampToDelete = matching[0].timestamp;
-            toHide = document.getElementById(timestampToDelete);
-            toHide.style.display = "none";
+            toDelete = document.getElementById(timestampToDelete);
+            toDelete.remove();
         }
     }
 
