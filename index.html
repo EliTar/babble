@@ -7,65 +7,62 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Vegans - Babble</title>
 
-    <link rel="stylesheet" type="text/css" href="styles/dialog-polyfill.css">
-    <script src="scripts/dialog-polyfill.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="styles/dialog-polyfill.css">
+    <script src="scripts/dialog-polyfill.js"></script> -->
+
+    <link rel="stylesheet" href="../../node_modules/dialog-polyfill/dialog-polyfill.css">
+    <script src="../../node_modules/dialog-polyfill/dialog-polyfill.js"></script>
 
     <link rel="stylesheet" href="styles/main.css" type="text/css">
     <link rel="icon" href="images/favicon.ico">
 </head>
 
 <body>
-    <header class="page-header">
-        <img class="logo" src="images/logo.png" alt="logo">
-        <h1 class="hide-content">Babble</h1>
+    <header class="PageHeader">
+        <img class="PageHeader-logo" src="images/logo.png" alt="logo">
+        <h1 class="u-hideContent">Babble</h1>
     </header>
-    <nav class="left-pane">
+    <nav class="LeftPane">
         <!-- If you ever want to navigate here... -->
     </nav>
 
-    <main class="main">
-
-        <header class="messages-header">
+    <main class="Main">
+        <header class="MessagesHeader">
             <h2>
                 Vegans
             </h2>
-            <aside class="stats">
+            <aside class="MessagesHeader-stats">
                 <dl>
-                    <dt class="stats-icons">
+                    <dt class="MessagesHeader-statsIcons">
                         <img src="images/message.svg" aria-label="Number of messages in chat" title="Chat Messages" alt="Messages">
                     </dt>
-                    <dd class="stats-caption">0</dd>
-                    <dt class="stats-icons">
+                    <dd class="MessagesHeader-statsCaption">0</dd>
+                    <dt class="MessagesHeader-statsIcons">
                         <img src="images/person.svg" aria-label="Number of users online" title="Chat Users" alt="Users">
                     </dt>
-                    <dd class="stats-caption">0</dd>
+                    <dd class="MessagesHeader-statsCaption">0</dd>
                 </dl>
             </aside>
         </header>
 
-        <ul class="messages">
-            <li id="1507988727139"><img src="https://www.gravatar.com/avatar/8f5a31e66ae76dce481ef22ade05c1be.jpg?d=identicon" class="Message-image" alt=""><section class="Message-box" tabindex="1"><button class="Message-close" aria-label="Delete Message" tabindex="1" onclick="Babble.invokeDeleteMessage(this)">x</button><cite class="Message-name">Eli</cite><time datetime="2017-10-14T13:45:27.139Z" class="Message-time">16:45</time><p class="Message-text">really cool this still works</p></section></li>
-            <li id="1507988747460"><img src="https://www.gravatar.com/avatar/7079c72c21415131774625ba1d64f4b0.jpg?d=identicon" class="Message-image" alt=""><section class="Message-box" tabindex="1"><cite class="Message-name">Anonymous</cite><time datetime="2017-10-14T13:45:47.460Z" class="Message-time">16:45</time><p class="Message-text">What about this?</p></section></li>
-            <li id="1507988751389"><img src="https://www.gravatar.com/avatar/7079c72c21415131774625ba1d64f4b0.jpg?d=identicon" class="Message-image" alt=""><section class="Message-box" tabindex="1"><cite class="Message-name">Anonymous</cite><time datetime="2017-10-14T13:45:51.389Z" class="Message-time">16:45</time><p class="Message-text">cool</p></section></li>
-            <li id="1507989147442"><img src="https://www.gravatar.com/avatar/8f5a31e66ae76dce481ef22ade05c1be.jpg?d=identicon" class="Message-image" alt=""><section class="Message-box" tabindex="1"><button class="Message-close" aria-label="Delete Message" tabindex="1" onclick="Babble.invokeDeleteMessage(this)">x</button><cite class="Message-name">Eli</cite><time datetime="2017-10-14T13:52:27.442Z" class="Message-time">16:52</time><p class="Message-text">YEssssss                </p></section></li>
+        <ul class="Messages">
         </ul>
 
-        <section class="user-input-area">
+        <section class="UserInputArea">
             <form id="userform">
-                <label for="textarea" class="hide-content">User Input</label>
-                <textarea id="textarea" name="message" form="userform" placeholder='Enter message...'>
-                </textarea>
-                <button type="submit" class="submit-icon" aria-label="Send Message"> </button>
+                <label for="textarea" class="u-hideContent">User Input</label>
+                <textarea class="UserInputArea-textarea" id="textarea" name="message" form="userform" placeholder='Enter message...'></textarea>
+                <button type="submit" class="UserInputArea-submitIcon" aria-label="Send Message"> </button>
             </form>
         </section>
     </main>
 
     <dialog>
         <!-- worked by this tutorial https://webdesign.tutsplus.com/tutorials/bring-your-forms-up-to-date-with-css3-and-html5-validation-webdesign-4738 -->
-        <form method="dialog" class="modal">
-            <ul class="dialog-sheet">
+        <form method="dialog" class="Modal">
+            <ul class="Modal-sheet">
                 <li>
-                    <h2>Who are you?</h2>
+                    <h2 class="Modal-heading">Who are you?</h2>
                 </li>
                 <li>
                     <label for="name">Full Name:</label>
@@ -75,7 +72,7 @@
                     <label for="email">Email:</label>
                     <input type="email" name="email" id="email" />
                 </li>
-                <li class="dialog-buttons">
+                <li class="Modal-buttons">
                     <button type="submit" value="anonymous">Stay Anonymous</button>
                     <button type="submit" value="save">Save</button>
                 </li>
