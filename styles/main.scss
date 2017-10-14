@@ -71,7 +71,7 @@ body {
     margin: 0;
 }
 
-.page-header {
+.PageHeader {
     position: absolute;
     width: 100%;
     height: $header-height;
@@ -81,7 +81,7 @@ body {
     background-color: $header-color;
 }
 
-.hide-content {
+.u-hideContent {
     position: absolute;
     left: -10000px;
     top: auto;
@@ -90,12 +90,12 @@ body {
     overflow: hidden;
 }
 
-.logo {
+.PageHeader-logo {
     height: 10vh;
     padding: 2vh;
 }
 
-.main {
+.Main {
     position: absolute;
     width: 100% - $left-pane-width;
     height: 100% - $header-height;
@@ -115,12 +115,12 @@ dialog {
     border: 1px solid rgba(0, 0, 0, 0.3);
     border-radius: 2px;
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-    & h2 {
+    & .Modal-heading {
         font-size: 1.5rem;
         font-weight: normal;
         color: $headings-color;
     }
-    & .dialog-sheet {
+    & .Modal-sheet {
         color: $message-textarea-content-color;
         padding-top: 0;
         margin: 0;
@@ -151,7 +151,7 @@ dialog::backdrop {
     background-color: rgba(0, 0, 0, 0.6);
 }
 
-.dialog-buttons {
+.Modal-buttons {
     position: absolute;
     bottom: 25px;
     right: 30px;
@@ -175,7 +175,7 @@ form {
     margin: 0;
 }
 
-.left-pane {
+.LeftPane {
     position: absolute;
     width: $left-pane-width;
     height: 100% - $header-height;
@@ -192,7 +192,7 @@ form {
         background-color: white;
     }
     &::-webkit-scrollbar {
-        width: 1%;
+        width: 0.8%;
         background-color: #F5F5F5;
     }
     &::-webkit-scrollbar-thumb {
@@ -202,7 +202,7 @@ form {
     }
 }
 
-.stats {
+.MessagesHeader-stats {
     width: 30%;
     margin-right: 4%;
     -webkit-margin-after: 0;
@@ -220,21 +220,21 @@ dl {
     -webkit-margin-before: 0;
 }
 
-.stats-caption {
+.MessagesHeader-statsCaption {
     display: inline;
     margin-left: 0.1rem;
     font-weight: bold;
     font-size: 1.1em;
 }
 
-.stats-icons {
+.MessagesHeader-statsIcons {
     display: inline;
     & img {
         height: 1.1rem;
     }
 }
 
-.messages {
+.Messages {
     // reset defualt properties
     list-style-type: none;
     padding: 0;
@@ -248,7 +248,7 @@ dl {
     @extend %scroll-bar;
 }
 
-.messages-header {
+.MessagesHeader {
     position: absolute;
     height: $message-header-height;
     width: 100%;
@@ -274,7 +274,7 @@ dl {
     }
 }
 
-.message-image {
+.Message-image {
     position: relative;
     float: left;
     top: 0.6em;
@@ -283,7 +283,7 @@ dl {
     border-radius: 50%;
 }
 
-.message-box {
+.Message-box {
     background-color: white;
     outline: none;
     display: inline-block;
@@ -300,9 +300,9 @@ dl {
     transition-duration: 0.2s;
 }
 
-.message-box:hover,
-.message-box:focus,
-.message-close:focus {
+.Message-box:hover,
+.Message-box:focus,
+.Message-close:focus {
     background-color: #EBEDEC;
 }
 
@@ -310,7 +310,7 @@ dl {
     height: $seperator-height;
 }
 
-.message-text {
+.Message-text {
     // Already set, its a paragraph. display: block;
     margin: 0;
     margin-top: 5px;
@@ -318,7 +318,7 @@ dl {
     color: $message-textarea-content-color;
 }
 
-.message-close {
+.Message-close {
     // Normlize the default button design
     background: none;
     border: none;
@@ -344,30 +344,30 @@ dl {
     }
 }
 
-.message-box:hover .message-close,
-.message-box:focus .message-close,
-.message-close:focus {
+.Message-box:hover .Message-close,
+.Message-box:focus .Message-close,
+.Message-close:focus {
     font-size: 1em;
 }
 
-.message-time {
+.Message-time {
     color: $message-time-color;
     font-size: 0.8em;
     margin-left: 5px;
 }
 
-.message-name {
+.Message-name {
     font-weight: bold;
     font-size: 1em;
 }
 
-.user-input-area {
+.UserInputArea {
     position: absolute;
     bottom: 0;
     width: 100%;
     height: $textarea-height;
     overflow-y: hidden;
-    & textarea {
+    & .UserInputArea-textarea {
         position: absolute;
         box-sizing: border-box;
         border: none;
@@ -377,18 +377,23 @@ dl {
         padding-right: 15%;
         width: 100%;
         height: 100%;
+        font-family: 'Nunito', sans-serif !important;
+        font-size: 1.1em;
         resize: none;
         outline: none;
         font-family: sans-serif, Tahoma;
-        font-size: 1.2em;
+        font-size: 1.1em;
         color: $message-textarea-content-color;
         overflow-y: hidden;
         @extend %scroll-bar;
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
-    .submit-icon:focus {
+    .UserInputArea-submitIcon:focus {
         outline: 5px auto -webkit-focus-ring-color !important;
     }
-    .submit-icon {
+    .UserInputArea-submitIcon {
         position: absolute;
         background: transparent url(../images/send.png) no-repeat;
         background-position: center center;
@@ -405,7 +410,7 @@ dl {
 }
 
 @media only screen and (max-width: 628px) {
-    .main {
+    .Main {
         width: 100%;
         top: $header-height-phone;
         height: 100% - $header-height-phone;
@@ -416,11 +421,11 @@ dl {
         height: 90%;
         top: 5%;
         box-sizing: border-box;
-        & h2 {
+        & .Modal-heading {
             font-size: 1.5rem;
             font-weight: normal;
         }
-        & .dialog-sheet {
+        & .Modal-sheet {
             padding-top: 10%;
             padding-left: 10%;
         }
@@ -438,10 +443,10 @@ dl {
             }
         }
     }
-    .page-header {
+    .PageHeader {
         height: $header-height-phone;
     }
-    .stats {
+    .MessagesHeader-stats {
         // margin-top: 1.5vh;
         // margin-right: 8vh;
         text-align: right;
@@ -449,14 +454,14 @@ dl {
         padding: 0;
         // width: 50%;
     }
-    .stats-caption {
+    .MessagesHeader-statsCaption {
         display: inline;
         margin: 0;
         padding: 0;
         font-weight: bold;
         font-size: 1em;
     }
-    .stats-icons {
+    .MessagesHeader-statsIcons {
         display: inline;
         margin-left: 0.5vh;
         // & img {
@@ -464,7 +469,7 @@ dl {
         //     height: 2vh;
         // }
     }
-    .messages-header {
+    .MessagesHeader {
         position: absolute;
         height: $message-header-height-phone;
         width: 100%;
@@ -484,7 +489,7 @@ dl {
             border: none;
         }
     }
-    .message-box {
+    .Message-box {
         margin: $message-box-top-bottom-margin-phone $message-box-left-right-margin;
         padding: 4px 8px;
         min-width: 40%;
@@ -492,46 +497,45 @@ dl {
         border-radius: 10px;
         border-width: 2px;
     }
-    .message-image {
+    .Message-image {
         position: relative;
         width: 8%;
         max-width: 4em;
         border-radius: 50%;
     }
-    .message-text {
+    .Message-text {
         // Already set, its a paragraph. display: block;
         margin: 0;
         margin-top: 5px;
         font-size: 0.95em;
     }
-    .message-time {
+    .Message-time {
         font-size: 0.7em;
     }
-    .message-name {
+    .Message-name {
         font-size: 0.9em;
     }
-    .messages {
+    .Messages {
         // reset defualt properties
         list-style-type: none;
         padding: 0;
         // The real work starts here
         position: absolute;
         width: $messages-pane-width;
-        max-height: 100% - $textarea-height - $message-header-height-phone - $seperator-height;
+        max-height: 73%;
         margin: 0% (100% - $messages-pane-width) / 2;
         bottom: $textarea-height + $seperator-height;
-        overflow-y: auto;
     }
-    .logo {
+    .PageHeader-logo {
         display: block;
         margin: auto;
         height: 11.5vh;
         padding-top: 2vh;
     }
-    .user-input-area {
+    .UserInputArea {
         position: absolute;
         height: $textarea-height;
-        & textarea {
+        & .UserInputArea-textarea {
             border: none;
             margin: 0;
             border: 0.15em solid #ECECEC;
@@ -544,14 +548,13 @@ dl {
             height: 80%;
             resize: none;
             outline: none;
-            font-family: sans-serif, Tahoma;
-            font-size: 1.2em;
+            font-size: 0.95em;
             border-width: 2px;
             &::-webkit-scrollbar {
                 display: none;
             }
         }
-        .submit-icon {
+        .UserInputArea-submitIcon {
             // position: absolute;
             top: 0;
             right: 0;
@@ -563,13 +566,13 @@ dl {
             float: right;
         }
     }
-    .left-pane {
+    .LeftPane {
         width: 0%;
     }
 }
 
 @media only screen and (max-width: 319px) {
-    .dialog-buttons {
+    .Modal-buttons {
         bottom: 25px;
         left: 30px;
         button:first-of-type {
@@ -581,10 +584,10 @@ dl {
             padding: 3px 5px;
         }
     }
-    .stats-caption {
+    .MessagesHeader-statsCaption {
         font-size: 70%;
     }
-    .messages-header {
+    .MessagesHeader {
         h2 {
             font-size: 100%;
         }
@@ -592,7 +595,7 @@ dl {
             margin: 0;
         }
     }
-    .stats-icons {
+    .MessagesHeader-statsIcons {
         margin-left: 0;
         img {
             height: 12px;
