@@ -231,6 +231,7 @@ dl {
     display: inline;
     & img {
         height: 1.1rem;
+        -webkit-margin-after: -0.1em;
     }
 }
 
@@ -253,7 +254,7 @@ dl {
     height: $message-header-height;
     width: 100%;
     & h2 {
-        margin: 0; // did problematic things with all the aligment 
+        margin: 0; // did problematic things with all the alignment
         display: inline-block;
         font-weight: normal;
         line-height: 1em;
@@ -262,9 +263,6 @@ dl {
         -webkit-margin-before: 0;
         -webkit-margin-after: 0;
         padding: 1vh 1.2vh;
-        // padding: 3vh;
-        // font-size: 2vw;
-        // padding-left: 1vw;
     }
     & aside {
         position: absolute;
@@ -421,18 +419,11 @@ dl {
         height: 90%;
         top: 5%;
         box-sizing: border-box;
-        & .Modal-heading {
-            font-size: 1.5rem;
-            font-weight: normal;
-        }
         & .Modal-sheet {
             padding-top: 10%;
             padding-left: 10%;
         }
         & li {
-            list-style-type: none;
-            list-style-position: outside;
-            padding: 0px;
             margin-bottom: 50px;
             margin-top: 0%;
             & input {
@@ -447,40 +438,24 @@ dl {
         height: $header-height-phone;
     }
     .MessagesHeader-stats {
-        // margin-top: 1.5vh;
-        // margin-right: 8vh;
-        text-align: right;
         margin: 0;
         padding: 0;
-        // width: 50%;
     }
     .MessagesHeader-statsCaption {
-        display: inline;
         margin: 0;
         padding: 0;
-        font-weight: bold;
         font-size: 1em;
     }
     .MessagesHeader-statsIcons {
-        display: inline;
         margin-left: 0.5vh;
-        // & img {
-        //     width: 10%;
-        //     height: 2vh;
-        // }
     }
     .MessagesHeader {
-        position: absolute;
         height: $message-header-height-phone;
-        width: 100%;
         & h2 {
             font-size: 3.5vh;
         }
         & aside {
-            position: absolute;
-            display: inline;
             top: 0;
-            right: 0;
             margin: 0.3em 2em;
         }
     }
@@ -498,13 +473,11 @@ dl {
         border-width: 2px;
     }
     .Message-image {
-        position: relative;
         width: 8%;
         max-width: 4em;
         border-radius: 50%;
     }
     .Message-text {
-        // Already set, its a paragraph. display: block;
         margin: 0;
         margin-top: 5px;
         font-size: 0.95em;
@@ -516,28 +489,16 @@ dl {
         font-size: 0.9em;
     }
     .Messages {
-        // reset defualt properties
-        list-style-type: none;
-        padding: 0;
-        // The real work starts here
-        position: absolute;
-        width: $messages-pane-width;
         max-height: 73%;
-        margin: 0% (100% - $messages-pane-width) / 2;
-        bottom: $textarea-height + $seperator-height;
     }
     .PageHeader-logo {
         display: block;
-        margin: auto;
+        // margin: auto; In my opinion a lot better with this! But it's not Serge's PSD... :(
         height: 11.5vh;
         padding-top: 2vh;
     }
     .UserInputArea {
-        position: absolute;
-        height: $textarea-height;
         & .UserInputArea-textarea {
-            border: none;
-            margin: 0;
             border: 0.15em solid #ECECEC;
             border-radius: 6px;
             padding: 5px;
@@ -546,21 +507,12 @@ dl {
             overflow-y: scroll;
             width: 75%;
             height: 80%;
-            resize: none;
-            outline: none;
             font-size: 0.95em;
             border-width: 2px;
-            &::-webkit-scrollbar {
-                display: none;
-            }
         }
         .UserInputArea-submitIcon {
-            // position: absolute;
-            top: 0;
-            right: 0;
             margin-top: 0%;
             margin-right: 4%;
-            outline: 0;
             max-width: 15%;
             max-height: 70%;
             float: right;

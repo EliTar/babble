@@ -167,7 +167,8 @@ dl {
 .MessagesHeader-statsIcons {
   display: inline; }
   .MessagesHeader-statsIcons img {
-    height: 1.1rem; }
+    height: 1.1rem;
+    -webkit-margin-after: -0.1em; }
 
 .Messages {
   list-style-type: none;
@@ -323,16 +324,10 @@ dl {
     height: 90%;
     top: 5%;
     box-sizing: border-box; }
-    dialog .Modal-heading {
-      font-size: 1.5rem;
-      font-weight: normal; }
     dialog .Modal-sheet {
       padding-top: 10%;
       padding-left: 10%; }
     dialog li {
-      list-style-type: none;
-      list-style-position: outside;
-      padding: 0px;
       margin-bottom: 50px;
       margin-top: 0%; }
       dialog li input {
@@ -343,29 +338,20 @@ dl {
   .PageHeader {
     height: 15%; }
   .MessagesHeader-stats {
-    text-align: right;
     margin: 0;
     padding: 0; }
   .MessagesHeader-statsCaption {
-    display: inline;
     margin: 0;
     padding: 0;
-    font-weight: bold;
     font-size: 1em; }
   .MessagesHeader-statsIcons {
-    display: inline;
     margin-left: 0.5vh; }
   .MessagesHeader {
-    position: absolute;
-    height: 7%;
-    width: 100%; }
+    height: 7%; }
     .MessagesHeader h2 {
       font-size: 3.5vh; }
     .MessagesHeader aside {
-      position: absolute;
-      display: inline;
       top: 0;
-      right: 0;
       margin: 0.3em 2em; }
   .Messages::-webkit-scrollbar-track, .UserInputArea .UserInputArea-textarea::-webkit-scrollbar-track {
     border: none; }
@@ -377,7 +363,6 @@ dl {
     border-radius: 10px;
     border-width: 2px; }
   .Message-image {
-    position: relative;
     width: 8%;
     max-width: 4em;
     border-radius: 50%; }
@@ -390,47 +375,28 @@ dl {
   .Message-name {
     font-size: 0.9em; }
   .Messages {
-    list-style-type: none;
-    padding: 0;
-    position: absolute;
-    width: 97%;
-    max-height: 73%;
-    margin: 0% 1.5%;
-    bottom: 17%; }
+    max-height: 73%; }
   .PageHeader-logo {
     display: block;
-    margin: auto;
     height: 11.5vh;
     padding-top: 2vh; }
-  .UserInputArea {
-    position: absolute;
-    height: 17%; }
-    .UserInputArea .UserInputArea-textarea {
-      border: none;
-      margin: 0;
-      border: 0.15em solid #ECECEC;
-      border-radius: 6px;
-      padding: 5px;
-      padding-right: 15%;
-      margin-left: 5%;
-      overflow-y: scroll;
-      width: 75%;
-      height: 80%;
-      resize: none;
-      outline: none;
-      font-size: 0.95em;
-      border-width: 2px; }
-      .UserInputArea .UserInputArea-textarea::-webkit-scrollbar {
-        display: none; }
-    .UserInputArea .UserInputArea-submitIcon {
-      top: 0;
-      right: 0;
-      margin-top: 0%;
-      margin-right: 4%;
-      outline: 0;
-      max-width: 15%;
-      max-height: 70%;
-      float: right; }
+  .UserInputArea .UserInputArea-textarea {
+    border: 0.15em solid #ECECEC;
+    border-radius: 6px;
+    padding: 5px;
+    padding-right: 15%;
+    margin-left: 5%;
+    overflow-y: scroll;
+    width: 75%;
+    height: 80%;
+    font-size: 0.95em;
+    border-width: 2px; }
+  .UserInputArea .UserInputArea-submitIcon {
+    margin-top: 0%;
+    margin-right: 4%;
+    max-width: 15%;
+    max-height: 70%;
+    float: right; }
   .LeftPane {
     width: 0%; } }
 

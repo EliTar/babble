@@ -4,8 +4,8 @@
     "description": "Web-based responsive chat with one room",
     "main": "server/server.js",
     "scripts": {
-        "start": "node server/main.js & http-server",
-        "test": "mocha test/server & http-server -a 127.0.0.1 -p 8081",
+        "start": "concurrently \"node server/main.js\" \"http-server\"",
+        "test": "concurrently \"mocha test/server\" \"http-server -a 127.0.0.1 -p 8081\"",
         "deploy": "gh-pages -d client"
     },
     "repository": {
@@ -22,6 +22,7 @@
     },
     "homepage": "https://github.com/EliTar/babble#readme",
     "dependencies": {
+        "concurrently": "^3.5.0",
         "dialog-polyfill": "^0.4.8",
         "http-server": "^0.10.0",
         "watch-http-server": "^0.7.6"

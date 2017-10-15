@@ -1,3 +1,5 @@
+// Code is good enough without documentation :)
+
 var crypto = require('crypto');
 
 var messagesArray = [];
@@ -28,8 +30,6 @@ function deleteMessage(id) {
 
     messagesArray[indexOfMessageToDelete] = "";
     numberOfDeletedMessages++;
-
-    // messagesArray.splice(indexOfMessageToDelete, 1);
 }
 
 module.exports = {
