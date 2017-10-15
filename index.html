@@ -6,6 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Vegans - Babble</title>
+
+    <!-- 
+    <link rel="stylesheet" href="../../node_modules/dialog-polyfill/dialog-polyfill.css">
+    Very small file, copied to main.scss file to enhance performance
+    -->
+
     <link rel="stylesheet" href="styles/main.css" type="text/css">
     <link rel="icon" href="images/favicon.ico">
 </head>
@@ -73,8 +79,13 @@
         </form>
     </dialog>
 
+    <!-- 
+    For GitHub Pages:
     <script src="scripts/dialog-polyfill.js"></script>
-    <script src="scripts/main.js"></script>
+    -->
+
+    <script src="../../node_modules/dialog-polyfill/dialog-polyfill.js" defer></script>
+    <script src="scripts/main.js" defer></script>
 </body>
 
 </html>
