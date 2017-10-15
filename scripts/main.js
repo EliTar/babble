@@ -1,13 +1,12 @@
-
-
+//
+// Written by Eli Tarnarutsky
+//
 
 window.Babble = (function() {
     var counter = 0;
     var currentUUID = 0;
     var matchIdAndTimestamp = [];
     var url = 'http://localhost:9000';
-
-    console.log('hello from client');
 
     maintainLocalStorage();
     showDialogAndListen();
@@ -17,87 +16,48 @@ window.Babble = (function() {
     textareaAutoGrow();
     resizeListener();
 
-    function resizeListener() {
-        var textarea = document.querySelector('textarea');
-
-        if (textarea === null) {
-            return false;
-        }
-
-        window.addEventListener("resize", function(evt) {
-            // Handle autogrow
-            var event = new Event('input', {
-                'bubbles': true,
-                'cancelable': true
-            });
-
-            textarea.dispatchEvent(event);
-        }, false);
-    }
-
-    function textareaAutoGrow() {
-        var textarea = document.querySelector('textarea');
-        var mainPane = document.querySelector('main');
-        var inputArea = document.querySelector('.UserInputArea');
-        var messages = document.querySelector('.Messages');
-
-        if (textarea && mainPane && inputArea && messages) {
-            var originalPercent = pixelToPercentHeight(textarea.scrollHeight, mainPane);
-            textarea.addEventListener('input', function(evt) {
-                oldScroll = textarea.scrollTop;
-                inputArea.style.cssText = 'height:' + originalPercent + '%';
-                var percent = pixelToPercentHeight(textarea.scrollHeight, mainPane);
-                if (percent < 17)
-                    percent = 17;
-                inputArea.style.cssText = 'height:' + percent + '%';
-                var bottom = (Number(percent));
-                var maxHeight = 100 - Number(percent) - 10;
-                messages.style.cssText = 'bottom: ' + bottom + '%; max-height: ' + maxHeight + '%';
-                if (textarea.scrollHeight > 300) {
-                    percent = pixelToPercentHeight(300, mainPane);
-                    inputArea.style.cssText = 'height:' + percent + '%';
-                    textarea.style.cssText = 'overflow-y: auto';
-                    textarea.scrollTop = oldScroll;
-                    bottom = (Number(percent));
-                    maxHeight = 100 - Number(percent) - 10;
-                    messages.style.cssText = 'bottom:' + bottom + '%; max-height: ' + maxHeight + '%';
-                }
-            }, false);
-        }
-    }
-
-    function pixelToPercentHeight(pixel, mainPane) {
-        var screenHeight = mainPane.clientHeight;
-        var Percent = Math.round((pixel / screenHeight) * 100);
-        return Percent;
-    }
-
     // Logic is as follows:
 
+    // If any of the following functions requires an element from the DOM,
+    // we first check if is exists before proceeding.
+
     // maintainLocalStorage():
-    // Reset the local storage values.
+    // Check for a previous localstorage session.
+    // Keep if exists, reset if not.
 
     // showDialogAndListen():
-    // The communication between the server and the client is implemented as long polling.
-    // A modal dialog is shown to the user, asking him for name and email.
-    // The browser listens until the form is submited,
-    // than saves the deatils of the user in the local storage
-    // and opens 2 pool requests to the server: stats and messages.
+    // The communication between the server and the client is implemented with long polling.
+    // When the page is opened, a modal dialog is shown to the user.
+    // The browser listens for the submission of the form,
+    // than saves the details of the user (name & email, if not anonymous) in the local storage (register function)
+    // and opens 2 pool requests to the server: stats (getStats) and messages (getMessages).
 
     // messageToLocalstorageListener():
     // Each time the client's message changes, it's updated in the local storage of the browser.
 
     // userLogoutListener():
     // Make sure the browser will send the server an appropriate message when 
-    // the user closes the tab of the messages.
+    // the user closes the tab of the chat.
+    // Important for maintaining stats
 
     // sendMessageListener():
-    // Waiting for the user to click the send button,
+    // Waiting for the user to click the send button or hit enter,
     // invokes the sending of a message to the server (postMessage);
+
+    // textareaAutoGrow():
+    // In charge of, well, auto-growing the textarea.
+    // Because the implementation of the design is with %, makes it a bit 
+    // harder to solve - therefore I wrote this function. 
+
+    // resizeListener():
+    // To complete the textarea autogrow, the browser will listen for window resize events,
+    // invoking a textarea event to update the size.
+
+    // All the logic connected to inserting the messages to the DOM
+    // follows the functions mentioned above.
 
     function maintainLocalStorage() {
         var lastSession = localStorage.getItem('babble');
-        var textarea = document.querySelector('textarea');
 
         var userInfo = { name: '', email: '' };
         var currentMessage = '';
@@ -106,9 +66,6 @@ window.Babble = (function() {
             lastSession = JSON.parse(lastSession);
             userInfo.name = lastSession.userInfo.name;
             userInfo.email = lastSession.userInfo.email;
-            currentMessage = lastSession.currentMessage;
-            if (textarea)
-                textarea.value = currentMessage;
         }
 
         babble = { "currentMessage": currentMessage, "userInfo": userInfo };
@@ -171,7 +128,7 @@ window.Babble = (function() {
         xhr.open('GET', url + '/stats');
         xhr.addEventListener('load', function(e) {
             var responseText = e.target.responseText;
-            if (responseText != "")
+            if (responseText != "") // Dealing with timeout
                 callback(JSON.parse(responseText));
             else
                 getStats(updateStats);
@@ -186,7 +143,7 @@ window.Babble = (function() {
         xhr.setRequestHeader('X-Request-ID', currentUUID);
         xhr.addEventListener('load', function(e) {
             var responseText = e.target.responseText;
-            if (responseText != "")
+            if (responseText != "") // Dealing with timeout
                 callback(JSON.parse(responseText), counter);
             else
                 getMessages(counter, proccessMessages);
@@ -238,23 +195,8 @@ window.Babble = (function() {
             return false;
         }
 
-        // form.addEventListener('submit', function(e) {
-        //     e.preventDefault();
-
-        //     var parseLocalDate = JSON.parse(localStorage.babble);
-        //     var userMessage = {
-        //         "name": parseLocalDate.userInfo.name,
-        //         "email": parseLocalDate.userInfo.email,
-        //         "message": parseLocalDate.currentMessage,
-        //         "timestamp": Date.now()
-        //     };
-
-        //     postMessage(userMessage, trackUserMessages);
-        //     textarea.value = "";
-        // });
-
         textarea.addEventListener('keydown', function(e) {
-            if (e.keyCode == 13 && !e.shiftKey)
+            if (e.keyCode == 13 && !e.shiftKey) // Enter for sending, Shift + Enter for new line
                 formSubmit(e, textarea);
         });
 
@@ -292,20 +234,19 @@ window.Babble = (function() {
     }
 
     function postMessage(message, callback) {
-        // var form = document.querySelector('section > form');
         var xhr = new XMLHttpRequest();
         xhr.open('POST', url + '/messages');
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        // if (form.method === 'post') {
-        //     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        // }
         xhr.addEventListener('load', function(e) {
             callback(JSON.parse(e.target.responseText), message.timestamp);
         });
-        // console.log(form.action + " and method is " + form.method);
-        console.log(message);
         xhr.send(JSON.stringify(message));
     }
+
+    // This way we can connect between IDs and timestamps for deleting messages.
+    // IDs are returned from the server, in contrast to timestamps
+    // which are known at the time of submission -
+    // and we don't have to wait for the ID to create the message.
 
     function trackUserMessages(serverResponse, timestamp) {
         var messageIdAndTimestemp = { "id": serverResponse.id, "timestamp": timestamp };
@@ -327,11 +268,80 @@ window.Babble = (function() {
     function deleteMessage(id, callback) {
         var xhr = new XMLHttpRequest();
         xhr.open('DELETE', url + '/messages/' + id, true);
-        // xhr.setRequestHeader('X-Request-ID', 'value');
         xhr.addEventListener('load', function(e) {
             callback(JSON.parse(e.target.responseText), id);
         });
         xhr.send();
+    }
+
+    function resizeListener() {
+        var textarea = document.querySelector('textarea');
+
+        if (textarea === null) {
+            return false;
+        }
+
+        window.addEventListener("resize", function(evt) {
+            // Handle autogrow
+            var event = new Event('input', {
+                'bubbles': true,
+                'cancelable': true
+            });
+
+            textarea.dispatchEvent(event);
+        }, false);
+    }
+
+    // We want to know what should be the size of the textarea in %,
+    // to accommodate the text inside (and smaller than 300px).
+
+    // When the textarea is at its original size, we can access the
+    // textarea.scrollHeight attribute, and check the size needed
+    // for the textarea to be without a scrollbar.
+
+    // We revert the text area to its original size,
+    // check the attribute, and then calculate the according % needed
+    // for manipulating the design.
+
+    // Yes, this may not be the prettiest way of doing so,
+    // but it's that best one I figured out after thinking and testing a bunch of
+    // solutions for precent based design.
+
+    function textareaAutoGrow() {
+        var textarea = document.querySelector('textarea');
+        var mainPane = document.querySelector('main');
+        var inputArea = document.querySelector('.UserInputArea');
+        var messages = document.querySelector('.Messages');
+
+        if (textarea && mainPane && inputArea && messages) {
+            var originalPercent = pixelToPercentHeight(textarea.scrollHeight, mainPane);
+            textarea.addEventListener('input', function(evt) {
+                oldScroll = textarea.scrollTop;
+                inputArea.style.cssText = 'height:' + originalPercent + '%';
+                var percent = pixelToPercentHeight(textarea.scrollHeight, mainPane);
+                if (percent < 17)
+                    percent = 17;
+                inputArea.style.cssText = 'height:' + percent + '%';
+                var bottom = (Number(percent));
+                var maxHeight = 100 - Number(percent) - 10;
+                messages.style.cssText = 'bottom: ' + bottom + '%; max-height: ' + maxHeight + '%';
+                if (textarea.scrollHeight > 300) {
+                    percent = pixelToPercentHeight(300, mainPane);
+                    inputArea.style.cssText = 'height:' + percent + '%';
+                    textarea.style.cssText = 'overflow-y: auto';
+                    textarea.scrollTop = oldScroll;
+                    bottom = (Number(percent));
+                    maxHeight = 100 - Number(percent) - 10;
+                    messages.style.cssText = 'bottom:' + bottom + '%; max-height: ' + maxHeight + '%';
+                }
+            }, false);
+        }
+    }
+
+    function pixelToPercentHeight(pixel, mainPane) {
+        var screenHeight = mainPane.clientHeight;
+        var Percent = Math.round((pixel / screenHeight) * 100);
+        return Percent;
     }
 
     // All the logic related to dealing with the client's HTML content.
@@ -390,13 +400,6 @@ window.Babble = (function() {
 
         messages.appendChild(holeMessage);
         messages.scrollTop = messages.scrollHeight;
-
-        // TODO: Had problems with timing. Rethink
-
-        // profileImage.addEventListener("load", function() {
-        //     messages.appendChild(holeMessage);
-        //     messages.scrollTop = messages.scrollHeight;
-        // });
     }
 
     function createMessageProfilePic(imgPath) {
@@ -453,7 +456,6 @@ window.Babble = (function() {
     function createMessageTime(currentTime) {
         var time = document.createElement('time');
         var timeText = document.createTextNode(parseTime(currentTime));
-        // time.setAttribute('datetime', '08:00+03:00');
         time.setAttribute('datetime', new Date(currentTime).toISOString());
         time.setAttribute('class', classNames.messageTime);
         time.appendChild(timeText);
