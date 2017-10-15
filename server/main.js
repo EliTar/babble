@@ -1,17 +1,31 @@
+//
+// This server implements a long-polling scheme.
+// Learn more by googling :)
+//
+// Written by Eli Tarnarutsky
+//
+
 var http = require('http');
 var urlUtil = require('url');
 var queryUtil = require('querystring');
 var messages = require('./messages-util.js');
 
+// Two long polling requests are executed concurrently.
+// Following are the waiting lists for each one: messages and stats.
+
 var waitingClients = [];
 var statsWaitList = [];
 
+// The server is waiting for requests starting with
+// /messages, /stats and /logout.
+
+// Each request is checked, and forwarded to an appropriate method
+// for the actual implementation.
+
 var server = http.createServer(function(request, response) {
-    console.log('Handling request URL: %s', request.url);
     response.setHeader('Access-Control-Allow-Origin', '*');
 
     var url = urlUtil.parse(request.url, true);
-    console.log("Request is: " + url.pathname);
 
     if (url.pathname.startsWith('/messages')) {
         switch (request.method) {
@@ -50,11 +64,14 @@ var server = http.createServer(function(request, response) {
 });
 
 preventRequestTimeout();
-
 server.listen(9000);
-console.log('listening...');
+console.log('Server is on');
 
-// Every 2 minutes, return empty response to clients
+// Every 4 minutes all unanswered requests are timed out,
+// and the connection with the client is terminated for the session.
+// Therefore, each interval we check if there are any "old" requests,
+// "free" them with an empty response and the client fires another request.
+
 function preventRequestTimeout() {
     setInterval(function() {
         var expire = Date.now() - 80 * 1000;
@@ -78,7 +95,7 @@ function preventRequestTimeout() {
 
 function updateStats(isDeleted) {
     var tempLength = statsWaitList.length;
-    if (isDeleted === true) {
+    if (isDeleted === true) { // If a user is deleted, he is not yet out of the waiting list.
         tempLength--;
     }
 
@@ -92,6 +109,8 @@ function updateStats(isDeleted) {
     }
 }
 
+// Gather the POST method data and pass it to a callback
+
 function handlePostRequest(request, response, callback) {
     var requestBody = '';
     request.on('data', function(chunk) {
@@ -103,12 +122,17 @@ function handlePostRequest(request, response, callback) {
     });
 }
 
+// Add a message to the messages array,
+// return it to every waiting client and update the stats,
+// then return the message ID to the client.
+
 function handleMessagesPost(data, response) {
     currentMessageID = messages.addMessage(data);
 
     waitingClients.forEach(function(client) {
         client.response.end(JSON.stringify(messages.getMessages(client.counter)));
     });
+
     updateStats(false);
     waitingClients.length = 0;
 
@@ -117,30 +141,38 @@ function handleMessagesPost(data, response) {
     response.end(JSON.stringify(currentMessageID));
 }
 
+// Just long polling.
+// The counter stands for the number of messages on the client side.
+// If there are more messages on the server than on the client,
+// immediately return all messages to match the current messages "state".
+// Otherwise, add to the waiting queue.
+
 function handleMessagesGet(url, request, response) {
-    var counter = Number(url.query.counter);
-    console.log("Counter is " + counter);
-    if (messages.messagesArray.length > counter) {
-        if (counter == 0)
-            updateStats(false);
-        response.end(JSON.stringify(messages.getMessages(counter)));
+    if (isNaN(url.query.counter)) { // Check for Data correctness.
+        endResponseWithCode(response, 400); // Bad HTTP request
     } else {
-        waitingClients.push({ request: request, response: response, counter: counter, timestamp: new Date().getTime() });
-        // statsWaitList.length > waitingClients.length || 
-        if (messages.messagesArray.length == 0)
-            updateStats(false);
+        var counter = Number(url.query.counter);
+        if (messages.messagesArray.length > counter) {
+            if (counter == 0) // A user just logged in
+                updateStats(false);
+            response.end(JSON.stringify(messages.getMessages(counter)));
+        } else {
+            waitingClients.push({ request: request, response: response, counter: counter, timestamp: new Date().getTime() });
+            if (messages.messagesArray.length == 0)
+                updateStats(false);
+        }
     }
 }
 
 function handleMessagesDelete(url, response) {
-    var id = Number(url.pathname.slice(url.pathname.lastIndexOf('/') + 1));
-    console.log("ID to delete is " + id);
-
-    messages.deleteMessage(id);
-
-    updateStats(false);
-
-    response.end(JSON.stringify(true));
+    if (isNaN(url.pathname.slice(url.pathname.lastIndexOf('/') + 1))) { // Check for Data correctness.
+        endResponseWithCode(response, 400); // Bad HTTP request
+    } else {
+        var id = Number(url.pathname.slice(url.pathname.lastIndexOf('/') + 1));
+        messages.deleteMessage(id);
+        updateStats(false);
+        response.end(JSON.stringify(true));
+    }
 }
 
 function handleMessagesOptions(response) {
@@ -154,18 +186,17 @@ function handleStatsGet(request, response) {
     statsWaitList.push({ request: request, response: response, timestamp: new Date().getTime() });
 }
 
+// The UUID is used to identify the user while keeping his privacy,
+// enabling us to log him out without exposing who he is by the sent data.
+
 function handleLogoutPost(data, response) {
     var userUUID = data;
 
     userToLogout = waitingClients.filter(function(user) { return user.request.headers['x-request-id'] === userUUID; });
     indexOfUserToLogout = waitingClients.indexOf(userToLogout[0]);
 
-    waitingClients.splice(indexOfUserToLogout, 1);
-
-    // userToNotWait = statsWaitList.filter(function(user) { return user.request.headers['x-request-id'] === userUUID; });
-    // indexOfUserToNotWait = statsWaitList.indexOf(userToNotWait[0]);
-
-    // statsWaitList.splice(indexOfUserToNotWait, 1);
+    if (indexOfUserToLogout > -1)
+        waitingClients.splice(indexOfUserToLogout, 1);
 
     updateStats(true);
 }
